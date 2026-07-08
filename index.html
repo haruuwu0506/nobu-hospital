@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>医療法人能登国際総合科学技術東京都心病院</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B1220;
+    --navy:#132241;
+    --navy-2:#1B335C;
+    --paper:#F6F7F5;
+    --paper-2:#ECEEEA;
+    --teal:#2C9C97;
+    --teal-dim:#1F6E6A;
+    --gold:#B8945F;
+    --line:#D8DCD3;
+    --text:#2B3340;
+    --text-soft:#5C6672;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Noto Sans JP', sans-serif;
+    background:var(--paper);
+    color:var(--text);
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+  .serif{font-family:'Noto Serif JP', serif;}
+  .mono{font-family:'Space Mono', monospace; letter-spacing:0.03em;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+
+  /* ---------- layout helpers ---------- */
+  .wrap{max-width:1120px; margin:0 auto; padding:0 32px;}
+  section{position:relative;}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,247,245,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 32px; max-width:1120px; margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand .mark{width:30px; height:30px;}
+  .brand-text{display:flex; flex-direction:column; line-height:1.25;}
+  .brand-text .main{font-family:'Noto Serif JP',serif; font-weight:700; font-size:15px; color:var(--navy);}
+  .brand-text .sub{font-size:10px; letter-spacing:0.12em; color:var(--text-soft);}
+  nav.links{display:flex; gap:28px; font-size:13.5px; letter-spacing:0.04em;}
+  nav.links a{position:relative; padding:4px 0; color:var(--text);}
+  nav.links a::after{
+    content:""; position:absolute; left:0; bottom:0; width:0; height:1px;
+    background:var(--teal); transition:width .25s ease;
+  }
+  nav.links a:hover::after{width:100%;}
+  @media (max-width:760px){ nav.links{display:none;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    background:
+      linear-gradient(180deg, rgba(11,18,32,0.86), rgba(19,34,65,0.94)),
+      var(--navy);
+    color:#fff;
+    overflow:hidden;
+    padding:120px 0 100px;
+  }
+  .hero .wrap{position:relative; z-index:2;}
+  .blueprint{
+    position:absolute; inset:0; z-index:1; opacity:0.35;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(ellipse at 70% 30%, black 0%, transparent 70%);
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:12px; letter-spacing:0.22em; color:var(--teal);
+    margin-bottom:28px;
+  }
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--teal);}
+  h1.hero-title{
+    font-family:'Noto Serif JP',serif; font-weight:700;
+    font-size:clamp(30px,4.4vw,50px);
+    line-height:1.55; letter-spacing:0.01em;
+    max-width:780px; margin-bottom:22px;
+  }
+  h1.hero-title em{
+    display:block; font-style:normal; color:var(--teal);
+    font-size:0.42em; letter-spacing:0.1em; font-family:'Noto Sans JP',sans-serif; font-weight:500;
+    margin-bottom:14px;
+  }
+  .hero-desc{max-width:560px; color:#C7CEDA; font-size:15px; margin-bottom:44px;}
+  .hero-stats{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+    border-top:1px solid rgba(255,255,255,0.16);
+    max-width:820px;
+  }
+  .hero-stats div{padding:22px 20px 0; border-left:1px solid rgba(255,255,255,0.16);}
+  .hero-stats div:first-child{border-left:none;}
+  .hero-stats .num{font-family:'Space Mono',monospace; font-size:26px; color:#fff;}
+  .hero-stats .label{font-size:11.5px; color:#95A0B3; margin-top:6px; letter-spacing:0.04em;}
+  @media (max-width:700px){ .hero-stats{grid-template-columns:repeat(2,1fr); row-gap:24px;} }
+
+  /* ---------- section heading pattern ---------- */
+  .head-block{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    gap:24px; margin-bottom:56px; flex-wrap:wrap;
+  }
+  .head-block .tag{
+    font-size:12px; letter-spacing:0.2em; color:var(--teal-dim);
+    display:block; margin-bottom:14px;
+  }
+  .head-block h2{
+    font-family:'Noto Serif JP',serif; font-weight:600;
+    font-size:clamp(22px,2.6vw,32px); color:var(--navy);
+  }
+  .head-block p{max-width:380px; font-size:13.5px; color:var(--text-soft);}
+
+  section.pad{padding:100px 0;}
+  section.alt{background:var(--paper-2);}
+
+  /* ---------- greeting ---------- */
+  .greeting{
+    display:grid; grid-template-columns:280px 1fr; gap:64px; align-items:start;
+  }
+  @media (max-width:820px){ .greeting{grid-template-columns:1fr;} }
+  .portrait{
+    aspect-ratio:3/4; background:
+      repeating-linear-gradient(135deg, var(--navy-2), var(--navy-2) 10px, var(--navy) 10px, var(--navy) 20px);
+    position:relative; overflow:hidden;
+    display:flex; align-items:flex-end; padding:20px;
+  }
+  .portrait .stamp{
+    color:#fff; font-size:12px; letter-spacing:0.05em;
+    background:rgba(0,0,0,0.35); padding:10px 14px; backdrop-filter:blur(2px);
+  }
+  .greeting blockquote{
+    font-family:'Noto Serif JP',serif; font-size:17px; line-height:2.05;
+    color:var(--navy); font-weight:500; margin-bottom:28px;
+  }
+  .greeting .signature{
+    display:flex; align-items:center; gap:16px; margin-top:32px;
+  }
+  .signature .seal{
+    width:44px; height:44px; border-radius:50%; border:1.5px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Noto Serif JP',serif; color:var(--gold); font-size:14px; font-weight:700;
+  }
+  .signature .who .name{font-family:'Noto Serif JP',serif; font-size:16px; color:var(--navy); font-weight:600;}
+  .signature .who .role{font-size:12px; color:var(--text-soft);}
+
+  /* ---------- pillars ---------- */
+  .pillars{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media (max-width:820px){ .pillars{grid-template-columns:1fr;} }
+  .pillar{background:var(--paper); padding:40px 34px;}
+  .pillar .idx{font-family:'Space Mono',monospace; color:var(--teal); font-size:12px; margin-bottom:22px;}
+  .pillar h3{font-family:'Noto Serif JP',serif; font-size:18px; color:var(--navy); margin-bottom:14px; font-weight:600;}
+  .pillar p{font-size:13.5px; color:var(--text-soft);}
+
+  /* ---------- departments ---------- */
+  .dept-list{border-top:1px solid var(--line);}
+  .dept-row{
+    display:grid; grid-template-columns:120px 1fr 2fr; gap:24px;
+    padding:22px 0; border-bottom:1px solid var(--line);
+    align-items:baseline;
+  }
+  .dept-row .code{font-family:'Space Mono',monospace; font-size:12px; color:var(--teal-dim);}
+  .dept-row .name{font-family:'Noto Serif JP',serif; font-size:16px; color:var(--navy); font-weight:600;}
+  .dept-row .desc{font-size:13px; color:var(--text-soft);}
+  @media (max-width:700px){
+    .dept-row{grid-template-columns:1fr; gap:6px;}
+  }
+
+  /* ---------- facility table ---------- */
+  .facts{
+    display:grid; grid-template-columns:1fr 1fr; gap:0;
+    border:1px solid var(--line); background:var(--paper);
+  }
+  .facts .fact{
+    padding:26px 32px; border-bottom:1px solid var(--line); border-right:1px solid var(--line);
+    display:flex; justify-content:space-between; gap:20px;
+  }
+  .facts .fact:nth-child(2n){border-right:none;}
+  .facts .fact .k{font-size:13px; color:var(--text-soft);}
+  .facts .fact .v{font-family:'Space Mono',monospace; font-size:14px; color:var(--navy); text-align:right;}
+  @media (max-width:700px){
+    .facts{grid-template-columns:1fr;}
+    .facts .fact{border-right:none;}
+  }
+
+  /* ---------- access ---------- */
+  .access{
+    display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start;
+  }
+  @media (max-width:820px){ .access{grid-template-columns:1fr;} }
+  .addr-card{
+    background:var(--navy); color:#fff; padding:44px;
+  }
+  .addr-card .zip{font-family:'Space Mono',monospace; color:var(--teal); font-size:13px; margin-bottom:14px;}
+  .addr-card .line{font-family:'Noto Serif JP',serif; font-size:19px; line-height:1.7; margin-bottom:24px;}
+  .addr-card .item{display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid rgba(255,255,255,0.15); font-size:13px;}
+  .addr-card .item .k{color:#95A0B3;}
+  .mapish{
+    aspect-ratio:4/3; border:1px solid var(--line); position:relative; overflow:hidden;
+    background:
+      linear-gradient(var(--paper-2) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-2) 1px, transparent 1px);
+    background-size:28px 28px; background-color:#fff;
+  }
+  .mapish .pin{
+    position:absolute; left:52%; top:46%; width:16px; height:16px;
+    border-radius:50% 50% 50% 0; background:var(--teal); transform:rotate(-45deg);
+    box-shadow:0 0 0 6px rgba(44,156,151,0.15);
+  }
+  .mapish .cap{
+    position:absolute; bottom:16px; left:16px; font-size:11px; color:var(--text-soft);
+    background:rgba(255,255,255,0.85); padding:6px 10px;
+  }
+
+  footer{
+    background:var(--ink); color:#8A93A3; padding:56px 0 34px; font-size:12.5px;
+  }
+  footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px;}
+  footer .brand-text .main{color:#fff;}
+  .foot-note{margin-top:36px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:#5C6672;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="18" stroke="#2C9C97" stroke-width="1.4"/>
+        <path d="M20 11v18M11 20h18" stroke="#2C9C97" stroke-width="1.6"/>
+        <circle cx="20" cy="20" r="3.2" fill="#B8945F"/>
+        <circle cx="20" cy="9" r="1.6" fill="#132241"/>
+        <circle cx="31" cy="20" r="1.6" fill="#132241"/>
+      </svg>
+      <div class="brand-text">
+        <span class="main">能登国際総合科学技術東京都心病院</span>
+        <span class="sub">MEDICAL CORPORATION NOTO INTERNATIONAL</span>
+      </div>
+    </div>
+    <nav class="links">
+      <a href="#greeting">ご挨拶</a>
+      <a href="#pillars">理念</a>
+      <a href="#departments">診療科目</a>
+      <a href="#facts">病院概要</a>
+      <a href="#access">アクセス</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="blueprint"></div>
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span>MEDICAL CORPORATION NOTO INTERNATIONAL</span>
+    <h1 class="hero-title">
+      <em>科学技術の精度と、人の手のぬくもりを、ひとつの医療へ。</em>
+      医療法人能登国際<br>総合科学技術東京都心病院
+    </h1>
+    <p class="hero-desc">
+      先端画像診断・ロボット手術・再生医療の各センターを核に、24診療科が連携する複合型総合病院です。
+      世田谷の地域医療から高度専門医療まで、ひとりの患者さまを多角的に支えます。
+    </p>
+    <div class="hero-stats">
+      <div><div class="num">24</div><div class="label">診療科目</div></div>
+      <div><div class="num">612</div><div class="label">病床数</div></div>
+      <div><div class="num">1,180</div><div class="label">職員数</div></div>
+      <div><div class="num">3⁺</div><div class="label">三次救急対応</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="pad" id="greeting">
+  <div class="wrap">
+    <div class="head-block">
+      <div>
+        <span class="tag">GREETING</span>
+        <h2>院長からのご挨拶</h2>
+      </div>
+      <p>患者さまお一人おひとりに向き合う医療を、科学技術の力で確かなものにしたい。その思いを職員全員で共有しています。</p>
+    </div>
+    <div class="greeting">
+      <div class="portrait">
+        <div class="stamp">院長　馬奈木信嘉</div>
+      </div>
+      <div>
+        <blockquote>
+          「医療は、技術が進むほど人の手が問われる仕事だと考えています。当院は総合科学技術の名を掲げていますが、
+          その根にあるのは一人ひとりの患者さまに丁寧に向き合うという、変わらない姿勢です。
+          最先端の診断機器や手術支援ロボットは、あくまで医師と患者さまの対話を支える道具であり、
+          目的そのものではありません。地域の皆さまにとって最も頼れる『かかりつけの総合病院』であり続けること、
+          それが私たちの変わらぬ使命です。」
+        </blockquote>
+        <div class="signature">
+          <div class="seal">馬奈木</div>
+          <div class="who">
+            <div class="name">馬奈木　信嘉</div>
+            <div class="role">医療法人能登国際総合科学技術東京都心病院　院長</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt pad" id="pillars">
+  <div class="wrap">
+    <div class="head-block">
+      <div>
+        <span class="tag">PHILOSOPHY</span>
+        <h2>当院が大切にしていること</h2>
+      </div>
+      <p>「総合」「科学技術」「都心」という3つの言葉に、私たちの役割を込めています。</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="idx">01 / SOGO</div>
+        <h3>総合診療の連携力</h3>
+        <p>24の診療科が院内で密に連携し、複数の疾患を抱える患者さまも一つの病院で継続的に診療します。専門科をまたぐ判断が必要な症例ほど、当院の総合力が力を発揮します。</p>
+      </div>
+      <div class="pillar">
+        <div class="idx">02 / KAGAKU GIJUTSU</div>
+        <h3>科学技術に基づく診断・治療</h3>
+        <p>先端画像診断センター、ロボット手術センター、再生医療センターを併設。データと臨床経験の両方に基づいた治療方針を、多職種のチームで検討します。</p>
+      </div>
+      <div class="pillar">
+        <div class="idx">03 / TOSHIN</div>
+        <h3>都心の暮らしに寄り添う救急体制</h3>
+        <p>三次救急に対応する救命救急センターを24時間稼働。都心で働き、暮らす方々が、いざという時に迷わず頼れる病院であることを目指しています。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pad" id="departments">
+  <div class="wrap">
+    <div class="head-block">
+      <div>
+        <span class="tag">DEPARTMENTS</span>
+        <h2>主な診療科目</h2>
+      </div>
+      <p>代表的な診療科を抜粋してご紹介します。詳しい受診案内は各科の窓口までお問い合わせください。</p>
+    </div>
+    <div class="dept-list">
+      <div class="dept-row">
+        <span class="code">DEPT.01</span>
+        <span class="name">総合内科</span>
+        <span class="desc">複数の症状・持病を横断的に診療し、必要に応じて専門各科へつなぐ入口となる診療科です。</span>
+      </div>
+      <div class="dept-row">
+        <span class="code">DEPT.02</span>
+        <span class="name">脳神経外科</span>
+        <span class="desc">先端画像診断センターと連携し、脳血管疾患・脊髄疾患の低侵襲治療に取り組んでいます。</span>
+      </div>
+      <div class="dept-row">
+        <span class="code">DEPT.03</span>
+        <span class="name">心臓血管外科</span>
+        <span class="desc">ロボット支援下手術を含む心臓血管領域の外科治療を、循環器内科と一体で提供します。</span>
+      </div>
+      <div class="dept-row">
+        <span class="code">DEPT.04</span>
+        <span class="name">再生医療センター</span>
+        <span class="desc">整形外科・皮膚科領域を中心に、自己組織を用いた再生医療の臨床応用を進めています。</span>
+      </div>
+      <div class="dept-row">
+        <span class="code">DEPT.05</span>
+        <span class="name">小児科</span>
+        <span class="desc">新生児から思春期まで、地域のお子さまの成長を長期的に見守る体制を整えています。</span>
+      </div>
+      <div class="dept-row">
+        <span class="code">DEPT.06</span>
+        <span class="name">産婦人科</span>
+        <span class="desc">周産期医療から婦人科腫瘍まで対応し、女性の生涯にわたる健康を支えます。</span>
+      </div>
+      <div class="dept-row">
+        <span class="code">DEPT.07</span>
+        <span class="name">救命救急センター</span>
+        <span class="desc">三次救急に対応し、24時間体制で都心エリアの重症・重篤患者を受け入れています。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt pad" id="facts">
+  <div class="wrap">
+    <div class="head-block">
+      <div>
+        <span class="tag">HOSPITAL DATA</span>
+        <h2>病院概要</h2>
+      </div>
+      <p>病院の基本情報です。最新の情報は各種お問い合わせ窓口にてご確認ください。</p>
+    </div>
+    <div class="facts">
+      <div class="fact"><span class="k">名称</span><span class="v">医療法人能登国際総合科学技術東京都心病院</span></div>
+      <div class="fact"><span class="k">院長</span><span class="v">馬奈木　信嘉</span></div>
+      <div class="fact"><span class="k">開設</span><span class="v">1987年（昭和62年）</span></div>
+      <div class="fact"><span class="k">病床数</span><span class="v">612床</span></div>
+      <div class="fact"><span class="k">診療科目数</span><span class="v">24科</span></div>
+      <div class="fact"><span class="k">職員数</span><span class="v">1,180名</span></div>
+      <div class="fact"><span class="k">敷地面積</span><span class="v">18,400㎡</span></div>
+      <div class="fact"><span class="k">救急指定</span><span class="v">三次救急指定病院</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="pad" id="access">
+  <div class="wrap">
+    <div class="head-block">
+      <div>
+        <span class="tag">ACCESS</span>
+        <h2>所在地・アクセス</h2>
+      </div>
+      <p>都心と住宅街の結節点に位置し、周辺地域からの通院にも配慮した立地です。</p>
+    </div>
+    <div class="access">
+      <div class="addr-card">
+        <div class="zip">〒113-8654</div>
+        <div class="line">東京都世田谷区金森<br>1丁目3−1</div>
+        <div class="item"><span class="k">代表電話</span><span>03-XXXX-XXXX</span></div>
+        <div class="item"><span class="k">外来受付</span><span>平日 8:30–17:00</span></div>
+        <div class="item"><span class="k">救急外来</span><span>24時間対応</span></div>
+        <div class="item"><span class="k">面会時間</span><span>13:00–19:00</span></div>
+      </div>
+      <div class="mapish">
+        <div class="pin"></div>
+        <div class="cap">東京都世田谷区金森1-3-1 付近</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand-text">
+      <span class="main serif">医療法人能登国際総合科学技術東京都心病院</span>
+      <span class="sub">〒113-8654　東京都世田谷区金森1丁目3−1</span>
+    </div>
+    <div>
+      <span class="sub">院長　馬奈木信嘉</span>
+    </div>
+  </div>
+  <div class="wrap foot-note">
+    ※この病院紹介ページは架空の医療機関を題材としたサンプルコンテンツです。実在の医療機関・人物とは関係ありません。
+  </div>
+</footer>
+
+</body>
+</html>
