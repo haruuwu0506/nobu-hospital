@@ -219,6 +219,23 @@
     display:inline-block; margin-top:14px; font-size:10.5px; letter-spacing:0.06em;
     color:var(--gold); border:1px solid var(--gold); padding:3px 8px;
   }
+  .staff-table{border-top:1px solid var(--line);}
+  .staff-table .srow{
+    display:grid; grid-template-columns:150px 110px 1fr 170px; gap:20px;
+    padding:18px 0; border-bottom:1px solid var(--line); align-items:baseline;
+  }
+  .staff-table .srow.head{
+    font-size:11px; letter-spacing:0.08em; color:var(--text-soft); padding-top:0;
+  }
+  .staff-table .position{font-size:12.5px; color:var(--teal-dim);}
+  .staff-table .pname{font-family:'Noto Serif JP',serif; font-size:16px; color:var(--navy); font-weight:600;}
+  .staff-table .spec{font-size:12.5px; color:var(--text-soft);}
+  .staff-table .salary{font-family:'Space Mono',monospace; font-size:13px; color:var(--gold); text-align:right;}
+  @media (max-width:760px){
+    .staff-table .srow{grid-template-columns:1fr; gap:4px;}
+    .staff-table .srow.head{display:none;}
+    .staff-table .salary{text-align:left;}
+  }
 
   /* ---------- achievements / case study ---------- */
   .case-card{
@@ -344,12 +361,14 @@
       </div>
       <div>
         <blockquote>
-          「医療は、技術が進むほど人の手が問われる仕事だと考えています。当院は総合科学技術の名を掲げていますが、
-          その根にあるのは一人ひとりの患者さまに丁寧に向き合うという、変わらない姿勢です。
-          最先端の診断機器や手術支援ロボットは、あくまで医師と患者さまの対話を支える道具であり、
-          目的そのものではありません。地域の皆さまにとって最も頼れる『かかりつけの総合病院』であり続けること、
-          それが私たちの変わらぬ使命です。」
+          「当院をご利用いただき、誠にありがとうございます。当院は今年で創立200年になります。
+          世界で一番伝統がある病院として、日本屈指の手術技術・機械技術を駆使し、患者さまをお救いいたします。
+          私どもは、地域の皆さまに安心して医療を受けていただけるよう、日々の診療に真摯に取り組んでおります。
+          今後も、より良い医療の提供と、心に寄り添う対応を心がけてまいります。」
         </blockquote>
+        <p style="font-size:12px; color:var(--text-soft); margin-top:-8px; margin-bottom:8px;">
+          ＊場合により、資力または容姿を優先して治療の順序を決定することがあります。
+        </p>
         <div class="signature">
           <div class="seal">馬奈木</div>
           <div class="who">
@@ -447,37 +466,55 @@
         <span class="tag">STAFF</span>
         <h2>スタッフ体制</h2>
       </div>
-      <p>現時点の主な担当・役職です。体制は随時見直されます。</p>
+      <p>現時点の役職・専門科・給与体系です。体制は随時見直されます。</p>
     </div>
-    <div class="staff-grid">
-      <div class="staff-card">
-        <div class="role">副院長</div>
-        <div class="name">岸川 <span class="suffix">医師</span></div>
-        <span class="badge">副院長</span>
+    <div class="staff-table">
+      <div class="srow head">
+        <span>役職</span><span>氏名</span><span>専門科</span><span style="text-align:right;">給料</span>
       </div>
-      <div class="staff-card">
-        <div class="role">外科・内科・脳神経外科 兼任</div>
-        <div class="name">能登 <span class="suffix">医師</span></div>
+      <div class="srow">
+        <span class="position">院長</span><span class="pname">馬奈木</span>
+        <span class="spec">全科</span><span class="salary">∞</span>
       </div>
-      <div class="staff-card">
-        <div class="role">ミサイル技術部</div>
-        <div class="name">石木田 <span class="suffix">担当</span></div>
+      <div class="srow">
+        <span class="position">副院長</span><span class="pname">岸川</span>
+        <span class="spec">なし</span><span class="salary">3億6千万円</span>
       </div>
-      <div class="staff-card">
-        <div class="role">顔面整形部</div>
-        <div class="name">大田 <span class="suffix">担当</span></div>
+      <div class="srow">
+        <span class="position">全科部統括代表</span><span class="pname">中野</span>
+        <span class="spec">総合治療監督</span><span class="salary">5億5千万ドル</span>
       </div>
-      <div class="staff-card">
-        <div class="role">手術部 助手</div>
-        <div class="name">浅見 <span class="suffix">担当</span></div>
+      <div class="srow">
+        <span class="position">医師長</span><span class="pname">能登</span>
+        <span class="spec">外科・脳神経外科・心臓外科</span><span class="salary">15億2千万円</span>
       </div>
-      <div class="staff-card">
-        <div class="role">全科部統括代表</div>
-        <div class="name">中野 <span class="suffix">担当</span></div>
+      <div class="srow">
+        <span class="position">医師</span><span class="pname">石木田</span>
+        <span class="spec">ミサイル技術・精神科</span><span class="salary">9000万円</span>
       </div>
-      <div class="staff-card">
-        <div class="role">清掃・手術準備 / 後片付け / 給食準備 兼任</div>
-        <div class="name">貞守 <span class="suffix">担当</span></div>
+      <div class="srow">
+        <span class="position">医師</span><span class="pname">大田</span>
+        <span class="spec">手術部名誉外科医</span><span class="salary">8億ドル</span>
+      </div>
+      <div class="srow">
+        <span class="position">看護師長</span><span class="pname">溝部</span>
+        <span class="spec">麻酔科医・外科医・心臓外科医・脳神経外科医</span><span class="salary">3億2千万円</span>
+      </div>
+      <div class="srow">
+        <span class="position">看護師</span><span class="pname">竹島</span>
+        <span class="spec">麻酔科医兼外来対応医師</span><span class="salary">2億円</span>
+      </div>
+      <div class="srow">
+        <span class="position">看護師副助手</span><span class="pname">浅見</span>
+        <span class="spec">麻酔科医・非常勤務医師</span><span class="salary">2億円</span>
+      </div>
+      <div class="srow">
+        <span class="position">他</span><span class="pname">貞守</span>
+        <span class="spec">その他すべて</span><span class="salary">23億ジンバブエドル</span>
+      </div>
+      <div class="srow">
+        <span class="position">処方せん</span><span class="pname">森井</span>
+        <span class="spec">—</span><span class="salary">20ジンバブエドル</span>
       </div>
     </div>
   </div>
@@ -490,7 +527,14 @@
         <span class="tag">TRACK RECORD</span>
         <h2>診療実績</h2>
       </div>
-      <p>当院で対応した症例の一例をご紹介します。</p>
+      <p>当院で対応した症例・業績の一例をご紹介します。</p>
+    </div>
+    <div class="facts" style="margin-bottom:48px;">
+      <div class="fact"><span class="k">手術成功率</span><span class="v">100%（石木田医師を除く）</span></div>
+      <div class="fact"><span class="k">難病専用病棟</span><span class="v">WHO認定</span></div>
+      <div class="fact"><span class="k">機械技術</span><span class="v">全国一位</span></div>
+      <div class="fact"><span class="k">難病対策本部</span><span class="v">院内設置済み</span></div>
+      <div class="fact"><span class="k">救急受付件数</span><span class="v">日本一</span></div>
     </div>
     <div class="case-card">
       <div class="case-head">
@@ -535,7 +579,7 @@
     <div class="facts">
       <div class="fact"><span class="k">名称</span><span class="v">医療法人能登国際総合科学技術東京都心センター病院</span></div>
       <div class="fact"><span class="k">院長</span><span class="v">馬奈木　信嘉</span></div>
-      <div class="fact"><span class="k">開設</span><span class="v">1987年（昭和62年）</span></div>
+      <div class="fact"><span class="k">開設</span><span class="v">1826年（文政9年）／創立200年</span></div>
       <div class="fact"><span class="k">病床数</span><span class="v">612床</span></div>
       <div class="fact"><span class="k">診療科目数</span><span class="v">24科</span></div>
       <div class="fact"><span class="k">職員数</span><span class="v">1,180名</span></div>
