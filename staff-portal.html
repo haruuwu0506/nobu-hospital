@@ -83,6 +83,29 @@
   .panel{background:#fff; padding:30px 32px;}
   .panel h3{font-family:'Noto Serif JP',serif; font-size:15px; color:var(--navy); margin-bottom:20px; font-weight:600;}
 
+  .doc-row{
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+    padding:20px 0; border-bottom:1px solid var(--line); flex-wrap:wrap;
+  }
+  .doc-row:last-child{border-bottom:none;}
+  .doc-left{display:flex; align-items:center; gap:16px;}
+  .doc-icon{
+    width:38px; height:38px; flex:none; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Mono',monospace; font-size:9px; color:var(--teal-dim); letter-spacing:0.02em;
+  }
+  .doc-info{display:flex; flex-direction:column; gap:4px;}
+  .doc-title{font-family:'Noto Serif JP',serif; font-size:14.5px; color:var(--navy); font-weight:600;}
+  .doc-sub{font-size:11.5px; color:var(--text-soft);}
+  .doc-actions{display:flex; gap:10px;}
+  .doc-actions a{
+    font-size:12px; padding:8px 14px; border:1px solid var(--navy); color:var(--navy);
+    transition:background .2s ease, color .2s ease; white-space:nowrap;
+  }
+  .doc-actions a.primary{background:var(--navy); color:#fff;}
+  .doc-actions a:hover{background:var(--navy); color:#fff;}
+  .doc-note{font-size:11px; color:var(--text-soft); margin-top:18px; line-height:1.8;}
+
   .notice{padding:14px 0; border-bottom:1px solid var(--line); display:flex; gap:14px;}
   .notice:last-child{border-bottom:none;}
   .notice .date{font-family:'Space Mono',monospace; font-size:11px; color:var(--teal-dim); white-space:nowrap; padding-top:2px;}
@@ -153,9 +176,40 @@
       <div class="who">ログイン中：<b>職員（サンプル表示）</b><br>最終ログイン：本日</div>
     </div>
 
+    <div class="panel" style="margin-bottom:1px;">
+      <h3>重要書類</h3>
+      <div class="doc-row">
+        <div class="doc-left">
+          <div class="doc-icon">PDF</div>
+          <div class="doc-info">
+            <span class="doc-title">診断書</span>
+            <span class="doc-sub">患者：岡本 慶太朗　／　発行：2026年7月6日　／　能登 春鳳</span>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <a href="staff/岡本様診断書.pdf" target="_blank" rel="noopener">表示</a>
+          <a class="primary" href="staff/岡本様診断書.pdf" download>ダウンロード</a>
+        </div>
+      </div>
+      <div class="doc-row">
+        <div class="doc-left">
+          <div class="doc-icon">PDF</div>
+          <div class="doc-info">
+            <span class="doc-title">手術同意書</span>
+            <span class="doc-sub">患者：岡本 慶太朗　／　主治医：能登 春鳳</span>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <a href="staff/岡本様手術同意書.pdf" target="_blank" rel="noopener">表示</a>
+          <a class="primary" href="staff/岡本様手術同意書.pdf" download>ダウンロード</a>
+        </div>
+      </div>
+      <p class="doc-note">※院内関係者限定の書類です。取り扱いにはご注意ください。</p>
+    </div>
+
     <div class="panel" style="text-align:center; padding:80px 32px;">
       <span style="display:inline-block; font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.1em; color:var(--teal-dim); border:1px solid var(--teal-dim); padding:4px 10px; margin-bottom:22px;">COMING SOON</span>
-      <h3 style="font-family:'Noto Serif JP',serif; font-size:19px; color:var(--navy); margin-bottom:14px; font-weight:600;">この先の中身は準備中です</h3>
+      <h3 style="font-family:'Noto Serif JP',serif; font-size:19px; color:var(--navy); margin-bottom:14px; font-weight:600;">その他の機能は準備中です</h3>
       <p style="font-size:13px; color:var(--text-soft); max-width:440px; margin:0 auto;">
         お知らせ・給与明細・シフト表などの機能は現在準備中です。公開までしばらくお待ちください。
       </p>
