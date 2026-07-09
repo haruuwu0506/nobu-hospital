@@ -265,6 +265,14 @@
   .case-head .name{font-family:'Noto Serif JP',serif; font-size:18px; font-weight:600;}
   .case-head .tagline{font-family:'Space Mono',monospace; font-size:11px; color:var(--teal);}
   .case-body{padding:34px 32px;}
+  .case-body-grid{display:grid; grid-template-columns:200px 1fr; gap:32px;}
+  @media (max-width:700px){ .case-body-grid{grid-template-columns:1fr;} }
+  .patient-photo{border:1px solid var(--line); overflow:hidden;}
+  .patient-photo img{width:100%; display:block; object-fit:cover; aspect-ratio:3/4;}
+  .patient-photo .cap{
+    padding:10px 12px; font-size:11px; color:var(--text-soft); background:var(--paper);
+    border-top:1px solid var(--line);
+  }
   .case-row{
     display:grid; grid-template-columns:130px 1fr; gap:24px;
     padding:18px 0; border-bottom:1px solid var(--line);
@@ -309,6 +317,10 @@
     background:var(--ink); color:#8A93A3; padding:56px 0 34px; font-size:12.5px;
   }
   footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px;}
+  .footer-qr{display:flex; align-items:center; gap:14px;}
+  .footer-qr img{width:74px; height:74px; background:#fff; padding:6px;}
+  .footer-qr .qr-label{font-size:11px; color:#8A93A3; line-height:1.7;}
+  .footer-qr .qr-label b{display:block; color:#fff; font-size:12px; margin-bottom:4px; font-weight:500;}
   footer .brand-text .main{color:#fff;}
   .foot-note{margin-top:36px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.1); font-size:11px; color:#5C6672;}
 </style>
@@ -360,8 +372,8 @@
     </p>
     <div class="hero-stats">
       <div><div class="num">24</div><div class="label">診療科目</div></div>
-      <div><div class="num">612</div><div class="label">病床数</div></div>
-      <div><div class="num">1,180</div><div class="label">職員数</div></div>
+      <div><div class="num">60,000</div><div class="label">病床数</div></div>
+      <div><div class="num">30,000</div><div class="label">職員数</div></div>
       <div><div class="num">3⁺</div><div class="label">三次救急対応</div></div>
     </div>
   </div>
@@ -383,10 +395,14 @@
       </div>
       <div>
         <blockquote>
-          「当院をご利用いただき、誠にありがとうございます。当院は今年で創立200年になります。
-          世界で一番伝統がある病院として、日本屈指の手術技術・機械技術を駆使し、患者さまをお救いいたします。
-          私どもは、地域の皆さまに安心して医療を受けていただけるよう、日々の診療に真摯に取り組んでおります。
-          今後も、より良い医療の提供と、心に寄り添う対応を心がけてまいります。」
+          「こんにちは、あるいはこんばんは。医療法人能登国際総合科学技術東京都心センター病院、
+          院長の馬奈木信嘉です。当院はこの院長である私に絶大な権力があります。
+          当院は世界トップレベルの医療技術、とくにミサイル技術を駆使し、これまで数々の超難病患者を救ってまいりました。
+          全科において世界トップレベルを誇るこの病院では、診療科24、病床数6万床、職員3万人を動員して
+          病院経営にあたっております。日頃からこの病院に携わってくれている奴隷たちには、深く感謝申し上げます。
+          ありがとうございます。これからも優先順位をしっかりと考えながら病院経営を行ってまいりますので、
+          権力者の皆さまには、今後とも変わらぬご支援を賜りますようお願い申し上げます。
+          私どもの奴隷が全力でお客様をサポートしてまいります。何卒よろしくお願い申し上げます。」
         </blockquote>
         <p style="font-size:12px; color:var(--text-soft); margin-top:-8px; margin-bottom:8px;">
           ＊場合により、資力または容姿を優先して治療の順序を決定することがあります。
@@ -564,25 +580,33 @@
         <span class="tagline">CASE.001 — 治療中</span>
       </div>
       <div class="case-body">
-        <div class="case-row">
-          <span class="k">発症経過</span>
-          <span class="v">令和3年8月頃より、足が徐々に短くなるという症状が出現。</span>
-        </div>
-        <div class="case-row">
-          <span class="k">当初の診断</span>
-          <span class="v">当院・石木田医師（ミサイル技術部）による診察では「顔」が原因と診断される。</span>
-        </div>
-        <div class="case-row">
-          <span class="k">経過</span>
-          <span class="v">令和8年6月下旬、足が完全に消失した状態で当院を受診。能登医師が診察したところ、両足が完全に失われ、顔にも変形が及んでいることが確認された。</span>
-        </div>
-        <div class="case-row">
-          <span class="k">治療法</span>
-          <span class="v">馬奈木院長の執刀により脚部接合移植手術を実施。</span>
-        </div>
-        <div class="case-row">
-          <span class="k">現在の状況</span>
-          <span class="v">術後経過観察のため、現在も入院のうえ治療を継続中。</span>
+        <div class="case-body-grid">
+          <div class="patient-photo">
+            <img src="assets/patient-okamoto.png" alt="患者 岡本慶太朗">
+            <div class="cap">患者：岡本 慶太朗（ID: 103）</div>
+          </div>
+          <div>
+            <div class="case-row">
+              <span class="k">発症経過</span>
+              <span class="v">令和3年8月頃より、足が徐々に短くなるという症状が出現。</span>
+            </div>
+            <div class="case-row">
+              <span class="k">当初の診断</span>
+              <span class="v">当院・石木田医師（ミサイル技術部）による診察では「顔」が原因と診断される。</span>
+            </div>
+            <div class="case-row">
+              <span class="k">経過</span>
+              <span class="v">令和8年6月下旬、足が完全に消失した状態で当院を受診。能登医師が診察したところ、両足が完全に失われ、顔にも変形が及んでいることが確認された。</span>
+            </div>
+            <div class="case-row">
+              <span class="k">治療法</span>
+              <span class="v">馬奈木院長の執刀により脚部接合移植手術を実施。</span>
+            </div>
+            <div class="case-row">
+              <span class="k">現在の状況</span>
+              <span class="v">術後経過観察のため、現在も入院のうえ治療を継続中。</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -602,10 +626,10 @@
       <div class="fact"><span class="k">名称</span><span class="v">医療法人能登国際総合科学技術<wbr>東京都心センター病院</span></div>
       <div class="fact"><span class="k">院長</span><span class="v">馬奈木　信嘉</span></div>
       <div class="fact"><span class="k">開設</span><span class="v">1826年（文政9年）／創立200年</span></div>
-      <div class="fact"><span class="k">病床数</span><span class="v">612床</span></div>
+      <div class="fact"><span class="k">病床数</span><span class="v">60,000床</span></div>
       <div class="fact"><span class="k">診療科目数</span><span class="v">24科</span></div>
-      <div class="fact"><span class="k">職員数</span><span class="v">1,180名</span></div>
-      <div class="fact"><span class="k">敷地面積</span><span class="v">18,400㎡</span></div>
+      <div class="fact"><span class="k">職員数</span><span class="v">30,000名</span></div>
+      <div class="fact"><span class="k">敷地面積</span><span class="v">1,803,900㎡（東京ドーム約39個分）</span></div>
       <div class="fact"><span class="k">救急指定</span><span class="v">三次救急指定病院</span></div>
     </div>
   </div>
@@ -646,6 +670,10 @@
     <div>
       <span class="sub">院長　馬奈木信嘉</span><br>
       <a class="sub" href="contact.html" style="color:var(--teal); text-decoration:underline;">お問い合わせはこちら</a>
+    </div>
+    <div class="footer-qr">
+      <img src="assets/share-qr.png" alt="このページの共有用QRコード">
+      <div class="qr-label"><b>このページを共有</b>QRコードを読み取って<br>アクセスできます</div>
     </div>
   </div>
   <div class="wrap foot-note">
