@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>医療法人能登国際総合科学技術東京都心センター病院</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23132241'/%3E%3Ccircle cx='20' cy='20' r='16' stroke='%232C9C97' stroke-width='1.6' fill='none'/%3E%3Cpath d='M20 12v16M12 20h16' stroke='%232C9C97' stroke-width='1.8'/%3E%3Ccircle cx='20' cy='20' r='3' fill='%23B8945F'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -62,6 +63,13 @@
     background:var(--teal); transition:width .25s ease;
   }
   nav.links a:hover::after{width:100%;}
+  .nav-right{display:flex; align-items:center; gap:32px;}
+  .portal-btn{
+    font-size:12px; letter-spacing:0.04em; color:var(--navy);
+    border:1px solid var(--navy); padding:9px 16px;
+    transition:background .2s ease, color .2s ease; white-space:nowrap;
+  }
+  .portal-btn:hover{background:var(--navy); color:#fff;}
   @media (max-width:760px){ nav.links{display:none;} }
 
   /* ---------- hero ---------- */
@@ -313,15 +321,18 @@
         <span class="sub">MEDICAL CORPORATION NOTO INTERNATIONAL</span>
       </div>
     </div>
-    <nav class="links">
-      <a href="#greeting">ご挨拶</a>
-      <a href="#pillars">理念</a>
-      <a href="#departments">診療科目</a>
-      <a href="#staff">スタッフ体制</a>
-      <a href="#achievements">診療実績</a>
-      <a href="#facts">病院概要</a>
-      <a href="#access">アクセス</a>
-    </nav>
+    <div class="nav-right">
+      <nav class="links">
+        <a href="#greeting">ご挨拶</a>
+        <a href="#pillars">理念</a>
+        <a href="#departments">診療科目</a>
+        <a href="#staff">スタッフ体制</a>
+        <a href="#achievements">診療実績</a>
+        <a href="#facts">病院概要</a>
+        <a href="#access">アクセス</a>
+      </nav>
+      <a class="portal-btn" href="staff-portal.html">職員専用ログイン</a>
+    </div>
   </div>
 </header>
 
@@ -603,7 +614,7 @@
         <div class="zip">〒113-8654</div>
         <div class="line">東京都世田谷区金森<br>1丁目3−1</div>
         <div class="item"><span class="k">代表電話</span><span>03-XXXX-XXXX</span></div>
-        <div class="item"><span class="k">外来受付</span><span>平日 8:30–17:00</span></div>
+        <div class="item"><span class="k">外来受付</span><span>平日 24時間　0:00〜0:00</span></div>
         <div class="item"><span class="k">救急外来</span><span>24時間対応</span></div>
         <div class="item"><span class="k">面会時間</span><span>13:00–19:00</span></div>
       </div>
