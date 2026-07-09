@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>お問い合わせ｜医療法人能登国際総合科学技術東京都心センター病院</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23132241'/%3E%3Ccircle cx='20' cy='20' r='16' stroke='%232C9C97' stroke-width='1.6' fill='none'/%3E%3Cpath d='M20 12v16M12 20h16' stroke='%232C9C97' stroke-width='1.8'/%3E%3Ccircle cx='20' cy='20' r='3' fill='%23B8945F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B1220; --navy:#132241; --navy-2:#1B335C;
+    --paper:#F6F7F5; --paper-2:#ECEEEA;
+    --teal:#2C9C97; --teal-dim:#1F6E6A; --gold:#B8945F;
+    --line:#D8DCD3; --text:#2B3340; --text-soft:#5C6672;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Noto Sans JP', sans-serif; background:var(--paper);
+    color:var(--text); line-height:1.9; -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1000px; margin:0 auto; padding:0 32px;}
+  section{position:relative;}
+  section.pad{padding:90px 0;}
+  section.alt{background:var(--paper-2);}
+
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,247,245,0.92); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 32px; max-width:1000px; margin:0 auto;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand svg{width:28px; height:28px;}
+  .brand-text{display:flex; flex-direction:column; line-height:1.25;}
+  .brand-text .main{font-family:'Noto Serif JP',serif; font-weight:700; font-size:14px; color:var(--navy); word-break:keep-all;}
+  .brand-text .sub{font-size:10px; letter-spacing:0.12em; color:var(--text-soft);}
+  .back{font-size:12px; color:var(--navy); border:1px solid var(--navy); padding:9px 16px; white-space:nowrap;}
+  .back:hover{background:var(--navy); color:#fff;}
+
+  .hero{
+    background:linear-gradient(180deg, rgba(11,18,32,0.86), rgba(19,34,65,0.94)), var(--navy);
+    color:#fff; overflow:hidden; padding:90px 0 76px;
+  }
+  .hero .wrap{position:relative; z-index:2;}
+  .blueprint{
+    position:absolute; inset:0; z-index:1; opacity:0.35;
+    background-image:linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(ellipse at 70% 30%, black 0%, transparent 70%);
+  }
+  .eyebrow{display:inline-flex; align-items:center; gap:10px; font-size:12px; letter-spacing:0.22em; color:var(--teal); margin-bottom:22px;}
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--teal);}
+  h1.hero-title{
+    font-family:'Noto Serif JP',serif; font-weight:700; font-size:clamp(28px,4vw,42px);
+    line-height:1.5; word-break:keep-all;
+  }
+  .hero-desc{max-width:520px; color:#C7CEDA; font-size:14.5px; margin-top:18px;}
+
+  .head-block{margin-bottom:44px;}
+  .head-block .tag{font-size:12px; letter-spacing:0.2em; color:var(--teal-dim); display:block; margin-bottom:12px;}
+  .head-block h2{font-family:'Noto Serif JP',serif; font-weight:600; font-size:clamp(20px,2.4vw,28px); color:var(--navy);}
+  .head-block p{font-size:13.5px; color:var(--text-soft); margin-top:10px; max-width:460px;}
+
+  /* ---------- form ---------- */
+  .contact-grid{display:grid; grid-template-columns:1.2fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media (max-width:820px){ .contact-grid{grid-template-columns:1fr;} }
+  .form-panel, .info-panel{background:var(--paper); padding:40px;}
+  .field{margin-bottom:22px;}
+  .field label{display:block; font-size:12px; letter-spacing:0.04em; color:var(--text-soft); margin-bottom:8px;}
+  .field label .req{color:var(--gold); margin-left:4px;}
+  .field input, .field select, .field textarea{
+    width:100%; border:1px solid var(--line); background:#fff;
+    padding:12px 14px; font-size:13.5px; font-family:'Noto Sans JP',sans-serif; color:var(--text);
+  }
+  .field textarea{resize:vertical; min-height:120px;}
+  .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--teal);}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media (max-width:520px){ .row2{grid-template-columns:1fr;} }
+  .submit-btn{
+    background:var(--navy); color:#fff; border:none; padding:14px 30px;
+    font-size:13.5px; letter-spacing:0.04em; cursor:pointer; font-family:'Noto Sans JP',sans-serif;
+    transition:background .2s ease;
+  }
+  .submit-btn:hover{background:var(--teal-dim);}
+  .form-note{font-size:11px; color:var(--text-soft); margin-top:16px; line-height:1.8;}
+  #sent-msg{
+    display:none; margin-top:20px; padding:14px 18px; border:1px solid var(--teal-dim);
+    color:var(--teal-dim); font-size:13px; background:#fff;
+  }
+
+  .info-panel h3{font-family:'Noto Serif JP',serif; font-size:15px; color:var(--navy); margin-bottom:20px; font-weight:600;}
+  .info-item{padding:16px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; font-size:13px;}
+  .info-item:last-child{border-bottom:none;}
+  .info-item .k{color:var(--text-soft);}
+  .info-item .v{color:var(--navy); font-family:'Space Mono',monospace; font-size:12.5px; text-align:right;}
+
+  /* ---------- dept contacts ---------- */
+  .dept-contact-list{border-top:1px solid var(--line);}
+  .dcrow{
+    display:grid; grid-template-columns:200px 1fr 150px; gap:20px;
+    padding:20px 0; border-bottom:1px solid var(--line); align-items:baseline;
+  }
+  .dcrow.head{font-size:11px; color:var(--text-soft); letter-spacing:0.06em;}
+  .dcrow .dname{font-family:'Noto Serif JP',serif; font-size:14.5px; color:var(--navy); font-weight:600;}
+  .dcrow .dwho{font-size:12.5px; color:var(--text-soft);}
+  .dcrow .dtel{font-family:'Space Mono',monospace; font-size:12.5px; color:var(--navy); text-align:right;}
+  @media (max-width:640px){
+    .dcrow{grid-template-columns:1fr; gap:4px;}
+    .dcrow.head{display:none;}
+    .dcrow .dtel{text-align:left;}
+  }
+
+  footer{background:var(--ink); color:#8A93A3; padding:44px 0; font-size:11.5px; text-align:center;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="18" stroke="#2C9C97" stroke-width="1.4"/>
+        <path d="M20 11v18M11 20h18" stroke="#2C9C97" stroke-width="1.6"/>
+        <circle cx="20" cy="20" r="3.2" fill="#B8945F"/>
+      </svg>
+      <div class="brand-text">
+        <span class="main">能登国際総合科学技術<wbr>東京都心センター病院</span>
+        <span class="sub">MEDICAL CORPORATION NOTO INTERNATIONAL</span>
+      </div>
+    </div>
+    <a class="back" href="index.html">← 病院紹介ページへ戻る</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="blueprint"></div>
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span>CONTACT</span>
+    <h1 class="hero-title">お問い合わせ</h1>
+    <p class="hero-desc">診療内容・ご予約・その他お問い合わせは、下記フォームまたは各部署直通の窓口までご連絡ください。</p>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="head-block">
+      <span class="tag">FORM</span>
+      <h2>お問い合わせフォーム</h2>
+      <p>必要事項をご記入のうえ送信してください。内容確認後、担当部署より折り返しご連絡いたします。</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="form-panel">
+        <form id="contact-form" onsubmit="return sendInquiry(event);">
+          <div class="row2">
+            <div class="field">
+              <label>お名前<span class="req">必須</span></label>
+              <input id="f-name" type="text" placeholder="山田 太郎" required>
+            </div>
+            <div class="field">
+              <label>フリガナ</label>
+              <input id="f-kana" type="text" placeholder="ヤマダ タロウ">
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label>メールアドレス<span class="req">必須</span></label>
+              <input id="f-email" type="email" placeholder="example@mail.com" required>
+            </div>
+            <div class="field">
+              <label>電話番号</label>
+              <input id="f-tel" type="tel" placeholder="03-XXXX-XXXX">
+            </div>
+          </div>
+          <div class="field">
+            <label>お問い合わせ部署</label>
+            <select id="f-dept">
+              <option>総合内科</option>
+              <option>脳神経外科</option>
+              <option>心臓血管外科</option>
+              <option>再生医療センター</option>
+              <option>小児科</option>
+              <option>産婦人科</option>
+              <option>救命救急センター</option>
+              <option>ミサイル技術部</option>
+              <option>顔面整形部</option>
+              <option>その他</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>お問い合わせ内容<span class="req">必須</span></label>
+            <textarea id="f-body" placeholder="お問い合わせ内容をご記入ください" required></textarea>
+          </div>
+          <button class="submit-btn" type="submit">送信する</button>
+          <p class="form-note">※送信ボタンを押すと、ご利用のメールソフトが起動し、宛先・件名・本文が自動入力された状態で下書きが開きます。内容をご確認のうえ、そのまま送信してください。</p>
+        </form>
+        <div id="sent-msg">メールソフトを開きました。内容をご確認のうえ送信してください。届かない場合は notoharutaka@outlook.jp 宛に直接ご連絡ください。</div>
+      </div>
+
+      <div class="info-panel">
+        <h3>代表窓口</h3>
+        <div class="info-item"><span class="k">代表電話</span><span class="v">03-XXXX-XXXX</span></div>
+        <div class="info-item"><span class="k">受付時間</span><span class="v">24時間対応</span></div>
+        <div class="info-item"><span class="k">FAX</span><span class="v">03-XXXX-XXXX</span></div>
+        <div class="info-item"><span class="k">救急直通</span><span class="v">03-XXXX-XXXX</span></div>
+        <div class="info-item"><span class="k">所在地</span><span class="v">竹島市金森区アシム1-3-1</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt pad">
+  <div class="wrap">
+    <div class="head-block">
+      <span class="tag">DEPARTMENTS</span>
+      <h2>各部署直通窓口</h2>
+      <p>担当部署へ直接お問い合わせいただく場合はこちらをご利用ください。</p>
+    </div>
+    <div class="dept-contact-list">
+      <div class="dcrow head"><span>部署</span><span>担当</span><span style="text-align:right;">直通番号</span></div>
+      <div class="dcrow"><span class="dname">総合内科</span><span class="dwho">受付窓口</span><span class="dtel">03-XXXX-0001</span></div>
+      <div class="dcrow"><span class="dname">脳神経外科・心臓血管外科</span><span class="dwho">医師長 能登</span><span class="dtel">03-XXXX-0002</span></div>
+      <div class="dcrow"><span class="dname">ミサイル技術部</span><span class="dwho">石木田</span><span class="dtel">03-XXXX-0003</span></div>
+      <div class="dcrow"><span class="dname">顔面整形部</span><span class="dwho">大田</span><span class="dtel">03-XXXX-0004</span></div>
+      <div class="dcrow"><span class="dname">再生医療センター</span><span class="dwho">受付窓口</span><span class="dtel">03-XXXX-0005</span></div>
+      <div class="dcrow"><span class="dname">救命救急センター</span><span class="dwho">24時間対応</span><span class="dtel">03-XXXX-0119</span></div>
+      <div class="dcrow"><span class="dname">総務・その他</span><span class="dwho">全科部統括代表 中野</span><span class="dtel">03-XXXX-0000</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    医療法人能登国際総合科学技術東京都心センター病院　お問い合わせ窓口<br>
+    〒113-8654　中野県竹島市金森区アシム1丁目3−1
+  </div>
+</footer>
+</body>
+<script>
+function sendInquiry(e){
+  e.preventDefault();
+  const name = document.getElementById('f-name').value;
+  const kana = document.getElementById('f-kana').value;
+  const email = document.getElementById('f-email').value;
+  const tel = document.getElementById('f-tel').value;
+  const dept = document.getElementById('f-dept').value;
+  const body = document.getElementById('f-body').value;
+
+  const subject = `【お問い合わせ】${dept}／${name}様`;
+  const lines = [
+    `お名前：${name}`,
+    `フリガナ：${kana}`,
+    `メールアドレス：${email}`,
+    `電話番号：${tel}`,
+    `お問い合わせ部署：${dept}`,
+    ``,
+    `お問い合わせ内容：`,
+    body
+  ].join('\n');
+
+  const mailto = `mailto:notoharutaka@outlook.jp?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines)}`;
+  window.location.href = mailto;
+
+  document.getElementById('contact-form').style.display = 'none';
+  document.getElementById('sent-msg').style.display = 'block';
+  return false;
+}
+</script>
+</html>
