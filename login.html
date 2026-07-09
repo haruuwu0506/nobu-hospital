@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>職員専用ポータル｜能登国際総合科学技術東京都心センター病院</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23132241'/%3E%3Ccircle cx='20' cy='20' r='16' stroke='%232C9C97' stroke-width='1.6' fill='none'/%3E%3Cpath d='M20 12v16M12 20h16' stroke='%232C9C97' stroke-width='1.8'/%3E%3Ccircle cx='20' cy='20' r='3' fill='%23B8945F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B1220; --navy:#132241; --navy-2:#1B335C;
+    --paper:#F6F7F5; --paper-2:#ECEEEA;
+    --teal:#2C9C97; --teal-dim:#1F6E6A; --gold:#B8945F;
+    --line:#D8DCD3; --text:#2B3340; --text-soft:#5C6672;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Noto Sans JP', sans-serif; background:var(--paper);
+    color:var(--text); line-height:1.85; min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1000px; margin:0 auto; padding:0 32px;}
+
+  header{
+    background:var(--navy); color:#fff; padding:18px 0;
+    border-bottom:2px solid var(--teal);
+  }
+  header .wrap{display:flex; align-items:center; justify-content:space-between;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand svg{width:26px; height:26px;}
+  .brand-text{display:flex; flex-direction:column; line-height:1.3;}
+  .brand-text .main{font-family:'Noto Serif JP',serif; font-weight:700; font-size:14px;}
+  .brand-text .sub{font-size:10px; letter-spacing:0.12em; color:#9AA6BA;}
+  header .back{font-size:12px; color:#C7CEDA; border:1px solid rgba(255,255,255,0.3); padding:8px 14px;}
+  header .back:hover{border-color:var(--teal); color:var(--teal);}
+
+  /* ---------- login screen ---------- */
+  #login-screen{
+    min-height:calc(100vh - 66px); display:flex; align-items:center; justify-content:center;
+    padding:60px 24px;
+    background:
+      linear-gradient(rgba(19,34,65,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(19,34,65,0.04) 1px, transparent 1px);
+    background-size:34px 34px;
+  }
+  .login-card{
+    width:100%; max-width:400px; background:#fff; border:1px solid var(--line);
+    padding:48px 40px;
+  }
+  .login-card .eyebrow{font-size:11px; letter-spacing:0.18em; color:var(--teal-dim); display:block; margin-bottom:10px;}
+  .login-card h1{
+    font-family:'Noto Serif JP',serif; font-size:21px; color:var(--navy); font-weight:600; margin-bottom:8px;
+  }
+  .login-card .desc{font-size:12.5px; color:var(--text-soft); margin-bottom:32px;}
+  .field{margin-bottom:20px;}
+  .field label{display:block; font-size:11.5px; letter-spacing:0.05em; color:var(--text-soft); margin-bottom:8px;}
+  .field input{
+    width:100%; border:1px solid var(--line); background:var(--paper);
+    padding:12px 14px; font-size:13.5px; font-family:'Noto Sans JP',sans-serif; color:var(--text);
+  }
+  .field input:focus{outline:none; border-color:var(--teal);}
+  .login-btn{
+    width:100%; background:var(--navy); color:#fff; border:none; padding:14px;
+    font-size:13.5px; letter-spacing:0.04em; margin-top:8px; cursor:pointer;
+    font-family:'Noto Sans JP',sans-serif; transition:background .2s ease;
+  }
+  .login-btn:hover{background:var(--teal-dim);}
+  .login-note{font-size:11px; color:var(--text-soft); margin-top:22px; line-height:1.8;}
+
+  /* ---------- dashboard ---------- */
+  #dashboard{display:none; padding:56px 0 90px;}
+  .dash-head{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:44px;}
+  .dash-head .tag{font-size:11px; letter-spacing:0.18em; color:var(--teal-dim); display:block; margin-bottom:10px;}
+  .dash-head h2{font-family:'Noto Serif JP',serif; font-size:24px; color:var(--navy); font-weight:600;}
+  .dash-head .who{font-size:12.5px; color:var(--text-soft); text-align:right;}
+  .dash-head .who b{color:var(--navy); font-family:'Noto Serif JP',serif;}
+
+  .grid2{display:grid; grid-template-columns:1.3fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:1px;}
+  @media (max-width:760px){ .grid2{grid-template-columns:1fr;} }
+  .panel{background:#fff; padding:30px 32px;}
+  .panel h3{font-family:'Noto Serif JP',serif; font-size:15px; color:var(--navy); margin-bottom:20px; font-weight:600;}
+
+  .notice{padding:14px 0; border-bottom:1px solid var(--line); display:flex; gap:14px;}
+  .notice:last-child{border-bottom:none;}
+  .notice .date{font-family:'Space Mono',monospace; font-size:11px; color:var(--teal-dim); white-space:nowrap; padding-top:2px;}
+  .notice .body b{font-size:13px; color:var(--navy); display:block; margin-bottom:3px;}
+  .notice .body span{font-size:12px; color:var(--text-soft);}
+
+  .quicklinks{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line);}
+  .qlink{background:#fff; padding:20px; font-size:12.5px; color:var(--navy); border:none; text-align:left; cursor:pointer; font-family:'Noto Sans JP',sans-serif;}
+  .qlink:hover{background:var(--paper-2);}
+  .qlink .n{display:block; font-family:'Space Mono',monospace; font-size:10px; color:var(--teal-dim); margin-bottom:6px;}
+
+  .roster{border-top:1px solid var(--line); margin-top:1px;}
+  .rrow{display:grid; grid-template-columns:120px 1fr 140px; gap:16px; padding:16px 32px; border-bottom:1px solid var(--line); font-size:12.5px; background:#fff;}
+  .rrow.head{color:var(--text-soft); font-size:11px; letter-spacing:0.06em; background:var(--paper-2);}
+  .rrow .nm{font-family:'Noto Serif JP',serif; color:var(--navy); font-weight:600;}
+  .rrow .st{color:var(--teal-dim);}
+  @media (max-width:600px){ .rrow{grid-template-columns:1fr; gap:4px;} }
+
+  .modal-note{
+    margin-top:34px; padding:18px 22px; border:1px dashed var(--line); font-size:11.5px; color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="18" stroke="#2C9C97" stroke-width="1.4"/>
+        <path d="M20 11v18M11 20h18" stroke="#2C9C97" stroke-width="1.6"/>
+        <circle cx="20" cy="20" r="3.2" fill="#B8945F"/>
+      </svg>
+      <div class="brand-text">
+        <span class="main">職員専用ポータル</span>
+        <span class="sub">STAFF INTRANET</span>
+      </div>
+    </div>
+    <a class="back" href="noto-hospital.html">← 病院紹介ページへ戻る</a>
+  </div>
+</header>
+
+<div id="login-screen">
+  <div class="login-card">
+    <span class="eyebrow">STAFF LOGIN</span>
+    <h1>職員専用ポータル</h1>
+    <p class="desc">職員ID・パスワードを入力してください。院内関係者のみアクセス可能です。</p>
+    <div class="field">
+      <label>職員ID</label>
+      <input type="text" placeholder="例）N-00123">
+    </div>
+    <div class="field">
+      <label>パスワード</label>
+      <input type="password" placeholder="●●●●●●●●">
+    </div>
+    <button class="login-btn" onclick="document.getElementById('login-screen').style.display='none'; document.getElementById('dashboard').style.display='block';">ログイン</button>
+    <p class="login-note">※本ページはサンプル表示です。ID・パスワードは入力内容に関わらずダッシュボードが表示されます。</p>
+  </div>
+</div>
+
+<div id="dashboard">
+  <div class="wrap">
+    <div class="dash-head">
+      <div>
+        <span class="tag">DASHBOARD</span>
+        <h2>職員ホーム</h2>
+      </div>
+      <div class="who">ログイン中：<b>職員（サンプル表示）</b><br>最終ログイン：本日</div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <h3>お知らせ</h3>
+        <div class="notice">
+          <span class="date">07.09</span>
+          <div class="body"><b>給与振込日のご案内</b><span>今月分の給与（各種通貨建て含む）は月末に一括で振り込まれます。</span></div>
+        </div>
+        <div class="notice">
+          <span class="date">07.05</span>
+          <div class="body"><b>難病対策本部より</b><span>難病専用病棟の運用体制を見直しました。詳細はマニュアルをご確認ください。</span></div>
+        </div>
+        <div class="notice">
+          <span class="date">07.01</span>
+          <div class="body"><b>創立200周年記念について</b><span>記念式典の詳細は追ってご案内いたします。</span></div>
+        </div>
+        <div class="notice">
+          <span class="date">06.28</span>
+          <div class="body"><b>石木田医師へのご連絡</b><span>ミサイル技術部からの問い合わせが多数届いています。窓口を精神科と分けてご対応ください。</span></div>
+        </div>
+      </div>
+      <div class="panel" style="padding:0;">
+        <h3 style="padding:30px 32px 0;">クイックリンク</h3>
+        <div class="quicklinks" style="margin-top:20px;">
+          <button class="qlink"><span class="n">01</span>給与明細</button>
+          <button class="qlink"><span class="n">02</span>シフト表</button>
+          <button class="qlink"><span class="n">03</span>院内マニュアル</button>
+          <button class="qlink"><span class="n">04</span>経費精算</button>
+          <button class="qlink"><span class="n">05</span>備品申請</button>
+          <button class="qlink"><span class="n">06</span>院内メール</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="roster">
+      <div class="rrow head">
+        <span>役職</span><span>氏名</span><span>ステータス</span>
+      </div>
+      <div class="rrow"><span>院長</span><span class="nm">馬奈木</span><span class="st">● 在籍</span></div>
+      <div class="rrow"><span>副院長</span><span class="nm">岸川</span><span class="st">● 在籍</span></div>
+      <div class="rrow"><span>全科部統括代表</span><span class="nm">中野</span><span class="st">● 在籍</span></div>
+      <div class="rrow"><span>医師長</span><span class="nm">能登</span><span class="st">● 在籍</span></div>
+      <div class="rrow"><span>医師</span><span class="nm">石木田</span><span class="st">● 在籍</span></div>
+      <div class="rrow"><span>医師</span><span class="nm">大田</span><span class="st">● 在籍</span></div>
+      <div class="rrow"><span>看護師長</span><span class="nm">溝部</span><span class="st">● 在籍</span></div>
+      <div class="rrow"><span>看護師</span><span class="nm">竹島</span><span class="st">● 在籍</span></div>
+      <div class="rrow"><span>看護師副助手</span><span class="nm">浅見</span><span class="st">● 在籍</span></div>
+      <div class="rrow"><span>他</span><span class="nm">貞守</span><span class="st">● 在籍</span></div>
+      <div class="rrow"><span>処方せん</span><span class="nm">森井</span><span class="st">● 在籍</span></div>
+    </div>
+
+    <div class="modal-note">
+      ※この職員専用ポータルは架空のサンプル画面です。実在のシステムとは関係ありません。「給与明細」等のリンクは表示のみで機能しません。
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
