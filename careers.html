@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>採用情報｜医療法人能登国際総合科学技術東京都心センター病院</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23132241'/%3E%3Ccircle cx='20' cy='20' r='16' stroke='%232C9C97' stroke-width='1.6' fill='none'/%3E%3Cpath d='M20 12v16M12 20h16' stroke='%232C9C97' stroke-width='1.8'/%3E%3Ccircle cx='20' cy='20' r='3' fill='%23B8945F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B1220; --navy:#132241; --navy-2:#1B335C;
+    --paper:#F6F7F5; --paper-2:#ECEEEA;
+    --teal:#2C9C97; --teal-dim:#1F6E6A; --gold:#B8945F;
+    --line:#D8DCD3; --text:#2B3340; --text-soft:#5C6672;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Noto Sans JP', sans-serif; background:var(--paper);
+    color:var(--text); line-height:1.9; -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1000px; margin:0 auto; padding:0 32px;}
+  section{position:relative;}
+  section.pad{padding:90px 0;}
+  section.alt{background:var(--paper-2);}
+
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,247,245,0.92); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 32px; max-width:1000px; margin:0 auto;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand svg{width:28px; height:28px;}
+  .brand-text{display:flex; flex-direction:column; line-height:1.25;}
+  .brand-text .main{font-family:'Noto Serif JP',serif; font-weight:700; font-size:14px; color:var(--navy); word-break:keep-all;}
+  .brand-text .sub{font-size:10px; letter-spacing:0.12em; color:var(--text-soft);}
+  .back{font-size:12px; color:var(--navy); border:1px solid var(--navy); padding:9px 16px; white-space:nowrap;}
+  .back:hover{background:var(--navy); color:#fff;}
+
+  .hero{
+    background:linear-gradient(180deg, rgba(11,18,32,0.86), rgba(19,34,65,0.94)), var(--navy);
+    color:#fff; overflow:hidden; padding:96px 0 80px;
+  }
+  .hero .wrap{position:relative; z-index:2;}
+  .blueprint{
+    position:absolute; inset:0; z-index:1; opacity:0.35;
+    background-image:linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(ellipse at 70% 30%, black 0%, transparent 70%);
+  }
+  .eyebrow{display:inline-flex; align-items:center; gap:10px; font-size:12px; letter-spacing:0.22em; color:var(--teal); margin-bottom:22px;}
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--teal);}
+  h1.hero-title{
+    font-family:'Noto Serif JP',serif; font-weight:700; font-size:clamp(28px,4vw,44px);
+    line-height:1.5; word-break:keep-all; max-width:640px;
+  }
+  .hero-desc{max-width:540px; color:#C7CEDA; font-size:14.5px; margin-top:18px;}
+  .hero-stats{display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-top:1px solid rgba(255,255,255,0.16); max-width:620px; margin-top:44px;}
+  .hero-stats div{padding:20px 20px 0; border-left:1px solid rgba(255,255,255,0.16);}
+  .hero-stats div:first-child{border-left:none;}
+  .hero-stats .num{font-family:'Space Mono',monospace; font-size:22px; color:#fff;}
+  .hero-stats .label{font-size:11px; color:#95A0B3; margin-top:6px;}
+
+  .head-block{margin-bottom:44px;}
+  .head-block .tag{font-size:12px; letter-spacing:0.2em; color:var(--teal-dim); display:block; margin-bottom:12px;}
+  .head-block h2{font-family:'Noto Serif JP',serif; font-weight:600; font-size:clamp(20px,2.4vw,28px); color:var(--navy);}
+  .head-block p{font-size:13.5px; color:var(--text-soft); margin-top:10px; max-width:480px;}
+
+  /* ---------- perks ---------- */
+  .perks{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media (max-width:820px){ .perks{grid-template-columns:1fr;} }
+  .perk{background:var(--paper); padding:34px 30px;}
+  .perk .idx{font-family:'Space Mono',monospace; color:var(--teal); font-size:12px; margin-bottom:18px;}
+  .perk h3{font-family:'Noto Serif JP',serif; font-size:16.5px; color:var(--navy); margin-bottom:12px; font-weight:600;}
+  .perk p{font-size:13px; color:var(--text-soft);}
+
+  /* ---------- job listings ---------- */
+  .job-table{border-top:1px solid var(--line);}
+  .jrow{
+    display:grid; grid-template-columns:160px 1fr 160px 100px; gap:18px;
+    padding:20px 0; border-bottom:1px solid var(--line); align-items:baseline;
+  }
+  .jrow.head{font-size:11px; letter-spacing:0.06em; color:var(--text-soft);}
+  .jrow .jtitle{font-family:'Noto Serif JP',serif; font-size:15px; color:var(--navy); font-weight:600;}
+  .jrow .jdesc{font-size:12.5px; color:var(--text-soft);}
+  .jrow .jpay{font-family:'Space Mono',monospace; font-size:12.5px; color:var(--gold); text-align:right;}
+  .jrow .jtag{font-size:10.5px; letter-spacing:0.04em; color:var(--teal-dim); border:1px solid var(--teal-dim); padding:3px 8px; text-align:center; white-space:nowrap;}
+  @media (max-width:760px){
+    .jrow{grid-template-columns:1fr; gap:4px;}
+    .jrow.head{display:none;}
+    .jrow .jpay{text-align:left;}
+    .jrow .jtag{width:fit-content;}
+  }
+
+  /* ---------- flow ---------- */
+  .flow{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media (max-width:820px){ .flow{grid-template-columns:repeat(2,1fr);} }
+  .fstep{background:var(--paper); padding:28px 24px;}
+  .fstep .n{font-family:'Space Mono',monospace; font-size:11px; color:var(--teal-dim); margin-bottom:10px;}
+  .fstep h4{font-family:'Noto Serif JP',serif; font-size:14.5px; color:var(--navy); margin-bottom:8px; font-weight:600;}
+  .fstep p{font-size:12px; color:var(--text-soft);}
+
+  .apply-box{
+    background:var(--navy); color:#fff; padding:48px; text-align:center; margin-top:1px;
+  }
+  .apply-box h3{font-family:'Noto Serif JP',serif; font-size:19px; margin-bottom:14px; font-weight:600;}
+  .apply-box p{font-size:13px; color:#C7CEDA; max-width:480px; margin:0 auto 26px;}
+  .apply-btn{
+    display:inline-block; background:var(--teal); color:#fff; padding:14px 32px;
+    font-size:13.5px; letter-spacing:0.04em; transition:background .2s ease;
+  }
+  .apply-btn:hover{background:var(--teal-dim);}
+
+  .foot-note{font-size:11px; color:var(--text-soft); margin-top:20px; text-align:center; line-height:1.8;}
+  footer{background:var(--ink); color:#8A93A3; padding:44px 0; font-size:11.5px; text-align:center;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="18" stroke="#2C9C97" stroke-width="1.4"/>
+        <path d="M20 11v18M11 20h18" stroke="#2C9C97" stroke-width="1.6"/>
+        <circle cx="20" cy="20" r="3.2" fill="#B8945F"/>
+      </svg>
+      <div class="brand-text">
+        <span class="main">能登国際総合科学技術<wbr>東京都心センター病院</span>
+        <span class="sub">MEDICAL CORPORATION NOTO INTERNATIONAL</span>
+      </div>
+    </div>
+    <a class="back" href="index.html">← 病院紹介ページへ戻る</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="blueprint"></div>
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span>RECRUIT</span>
+    <h1 class="hero-title">あなたの人生も、当院の給料体系で塗り替えませんか。</h1>
+    <p class="hero-desc">
+      全科世界トップレベルを掲げる当院では、あらゆる職種で人材を募集しています。
+      給与は円・ドル・ジンバブエドルなど、ご希望の通貨建てでお選びいただけます（一部職種を除く）。
+    </p>
+    <div class="hero-stats">
+      <div><div class="num">30,000</div><div class="label">現職員数</div></div>
+      <div><div class="num">11</div><div class="label">募集中の職種</div></div>
+      <div><div class="num">∞</div><div class="label">院長の給与上限</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="head-block">
+      <span class="tag">WHY US</span>
+      <h2>当院で働くということ</h2>
+      <p>権力・給与・伝統。3つの軸で、他院とは一線を画す働き方をご用意しています。</p>
+    </div>
+    <div class="perks">
+      <div class="perk">
+        <div class="idx">01 / SALARY</div>
+        <h3>通貨自由選択制の給与体系</h3>
+        <p>円・米ドル・ジンバブエドルなど、ご自身に合った通貨建てで給与を受け取れます（上限は院長のみ∞）。</p>
+      </div>
+      <div class="perk">
+        <div class="idx">02 / POWER</div>
+        <h3>役職に応じた裁量権</h3>
+        <p>全科部統括代表・医師長など、専門にとらわれない裁量の大きいポジションを多数ご用意しています。</p>
+      </div>
+      <div class="perk">
+        <div class="idx">03 / TRADITION</div>
+        <h3>創立200年の伝統</h3>
+        <p>1826年開設以来の歴史あるブランドのもと、世界トップレベルの医療技術・機械技術に携われます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt pad">
+  <div class="wrap">
+    <div class="head-block">
+      <span class="tag">OPEN POSITIONS</span>
+      <h2>募集職種</h2>
+      <p>現在募集中の職種です。詳細は各求人の面談時にご説明します。</p>
+    </div>
+    <div class="job-table">
+      <div class="jrow head"><span>職種</span><span>業務内容</span><span style="text-align:right;">給与目安</span><span style="text-align:center;">雇用形態</span></div>
+      <div class="jrow">
+        <span class="jtitle">医師（全科）</span>
+        <span class="jdesc">専門を問わず全科対応可能な方を歓迎。院長直下での勤務も可。</span>
+        <span class="jpay">応相談（上限なし）</span>
+        <span class="jtag">正職員</span>
+      </div>
+      <div class="jrow">
+        <span class="jtitle">医師長候補</span>
+        <span class="jdesc">外科・脳神経外科・心臓外科を横断的に担当いただける方。</span>
+        <span class="jpay">15億円〜</span>
+        <span class="jtag">正職員</span>
+      </div>
+      <div class="jrow">
+        <span class="jtitle">ミサイル技術部 技術者</span>
+        <span class="jdesc">難病の原因究明および特殊治療法の研究・開発。精神科の知見があれば尚可。</span>
+        <span class="jpay">9,000万円〜</span>
+        <span class="jtag">正職員</span>
+      </div>
+      <div class="jrow">
+        <span class="jtitle">顔面整形部 名誉外科医</span>
+        <span class="jdesc">手術部における名誉職としての採用。実務経験は不問。</span>
+        <span class="jpay">8億ドル〜</span>
+        <span class="jtag">正職員</span>
+      </div>
+      <div class="jrow">
+        <span class="jtitle">看護師長</span>
+        <span class="jdesc">麻酔・外科・心臓外科・脳神経外科を兼任いただける方を優遇。</span>
+        <span class="jpay">3億2,000万円〜</span>
+        <span class="jtag">正職員</span>
+      </div>
+      <div class="jrow">
+        <span class="jtitle">看護師</span>
+        <span class="jdesc">麻酔科・外来対応を兼務。未経験の方は院内研修あり。</span>
+        <span class="jpay">2億円〜</span>
+        <span class="jtag">正職員</span>
+      </div>
+      <div class="jrow">
+        <span class="jtitle">看護師副助手</span>
+        <span class="jdesc">麻酔科および非常勤業務。柔軟な勤務日数のご相談可。</span>
+        <span class="jpay">2億円〜</span>
+        <span class="jtag">非常勤</span>
+      </div>
+      <div class="jrow">
+        <span class="jtitle">全科部統括代表候補</span>
+        <span class="jdesc">総合治療監督として、全科の運営を横断的に統括いただきます。</span>
+        <span class="jpay">5億5,000万ドル〜</span>
+        <span class="jtag">正職員</span>
+      </div>
+      <div class="jrow">
+        <span class="jtitle">その他（清掃・手術準備・給食等兼任）</span>
+        <span class="jdesc">清掃・手術準備・後片付け・給食準備など、院内業務全般を幅広く担当。</span>
+        <span class="jpay">23億ジンバブエドル〜</span>
+        <span class="jtag">正職員</span>
+      </div>
+      <div class="jrow">
+        <span class="jtitle">処方せん担当</span>
+        <span class="jdesc">処方せんの発行・管理業務。</span>
+        <span class="jpay">20ジンバブエドル</span>
+        <span class="jtag">非常勤</span>
+      </div>
+      <div class="jrow">
+        <span class="jtitle">副院長候補</span>
+        <span class="jdesc">専門科不問。経営判断への同席が主な業務となります。</span>
+        <span class="jpay">3億6,000万円〜</span>
+        <span class="jtag">正職員</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="head-block">
+      <span class="tag">PROCESS</span>
+      <h2>応募の流れ</h2>
+    </div>
+    <div class="flow">
+      <div class="fstep">
+        <div class="n">STEP 01</div>
+        <h4>エントリー</h4>
+        <p>下記フォームまたはメールにてご応募ください。</p>
+      </div>
+      <div class="fstep">
+        <div class="n">STEP 02</div>
+        <h4>書類選考</h4>
+        <p>権力者からの紹介がある場合、選考が早まることがあります。</p>
+      </div>
+      <div class="fstep">
+        <div class="n">STEP 03</div>
+        <h4>面談</h4>
+        <p>院長または全科部統括代表による面談を実施します。</p>
+      </div>
+      <div class="fstep">
+        <div class="n">STEP 04</div>
+        <h4>採用</h4>
+        <p>給与通貨のご希望をうかがったうえで、正式に採用となります。</p>
+      </div>
+    </div>
+    <div class="apply-box">
+      <h3>ご応募・お問い合わせ</h3>
+      <p>希望職種・お名前・ご連絡先を明記のうえ、下記メールアドレスまでご連絡ください。</p>
+      <a class="apply-btn" href="mailto:notoharutaka@outlook.jp?subject=【採用エントリー】&body=希望職種：%0Aお名前：%0Aご連絡先：%0A自己PR：">エントリーする</a>
+    </div>
+    <p class="foot-note">※本採用情報は架空の医療機関を題材としたサンプルコンテンツです。実在の求人・雇用条件とは一切関係ありません。</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    医療法人能登国際総合科学技術東京都心センター病院　採用担当<br>
+    中野県竹島市金森区アシム1-3-1
+  </div>
+</footer>
+
+</body>
+</html>
