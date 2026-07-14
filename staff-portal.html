@@ -117,6 +117,11 @@
   }
   .shift-table td.on{color:var(--teal-dim); font-family:'Space Mono',monospace; font-size:11px;}
   .shift-table td.off{color:#C6CAC4; font-family:'Space Mono',monospace; font-size:11px;}
+  .shift-table select{
+    font-family:'Space Mono',monospace; font-size:11px; color:var(--navy);
+    border:1px solid var(--line); background:var(--paper); padding:4px 2px; width:100%;
+  }
+  .shift-table select:focus{outline:none; border-color:var(--teal);}
 
   .notice{padding:14px 0; border-bottom:1px solid var(--line); display:flex; gap:14px;}
   .notice:last-child{border-bottom:none;}
@@ -173,6 +178,10 @@
       <label>パスワード</label>
       <input id="login-pw" type="password" placeholder="●●●●●●●●">
     </div>
+    <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-soft); margin-bottom:8px; cursor:pointer;">
+      <input id="login-remember" type="checkbox" style="width:auto;">
+      この端末を記憶する（次回からパスワード入力を省略）
+    </label>
     <button class="login-btn" onclick="staffLogin();">ログイン</button>
     <p id="login-error" style="display:none; font-size:12px; color:#B23A3A; margin-top:14px;">職員IDまたはパスワードが正しくありません。</p>
     <p class="login-note">※院内関係者専用ページです。付与された職員ID・パスワードでログインしてください。</p>
@@ -180,16 +189,65 @@
 </div>
 
 <script>
+// ---- 職員アカウント一覧 ----
+const STAFF_ACCOUNTS = {
+  'N-87831': {password:'nobuasim',   name:'馬奈木',  role:'院長',           canEditShift:true},
+  'N-10002': {password:'kishikawa2', name:'岸川',    role:'副院長',         canEditShift:false},
+  'N-10003': {password:'nakano3',    name:'中野',    role:'全科部統括代表', canEditShift:false},
+  'N-10004': {password:'noto4',      name:'能登',    role:'医師長',         canEditShift:true},
+  'N-10005': {password:'ishikida5',  name:'石木田',  role:'医師',           canEditShift:false},
+  'N-10006': {password:'ota6',       name:'大田',    role:'医師',           canEditShift:false},
+  'N-10007': {password:'mizobe7',    name:'溝部',    role:'看護師長',       canEditShift:false},
+  'N-10008': {password:'takeshima8', name:'竹島',    role:'看護師',         canEditShift:false},
+  'N-10009': {password:'asami9',     name:'浅見',    role:'看護師副助手',   canEditShift:false},
+  'N-10010': {password:'sadamori10', name:'貞守',    role:'その他',         canEditShift:false},
+  'N-10011': {password:'morii11',    name:'森井',    role:'処方せん',       canEditShift:false},
+};
+
+const REMEMBER_KEY = 'hospitalStaffRememberedId';
+let currentStaffId = null;
+
+function enterDashboard(id){
+  currentStaffId = id;
+  const acc = STAFF_ACCOUNTS[id];
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('who-display').innerHTML =
+    'ログイン中：<b>' + acc.name + '（' + acc.role + '）</b><br>職員ID：' + id;
+  renderShiftTable();
+}
+
 function staffLogin(){
   const id = document.getElementById('login-id').value.trim();
   const pw = document.getElementById('login-pw').value;
-  if(id === 'N-87831' && pw === 'nobuasim'){
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
+  const remember = document.getElementById('login-remember').checked;
+  const acc = STAFF_ACCOUNTS[id];
+  if(acc && acc.password === pw){
+    if(remember){ localStorage.setItem(REMEMBER_KEY, id); }
+    enterDashboard(id);
   } else {
     document.getElementById('login-error').style.display = 'block';
   }
 }
+
+function staffLogout(){
+  localStorage.removeItem(REMEMBER_KEY);
+  currentStaffId = null;
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-id').value = '';
+  document.getElementById('login-pw').value = '';
+}
+
+// ---- 自動ログイン（端末記憶）----
+(function(){
+  const rememberedId = localStorage.getItem(REMEMBER_KEY);
+  if(rememberedId && STAFF_ACCOUNTS[rememberedId]){
+    window.addEventListener('DOMContentLoaded', function(){
+      enterDashboard(rememberedId);
+    });
+  }
+})();
 </script>
 
 <div id="dashboard">
@@ -199,7 +257,10 @@ function staffLogin(){
         <span class="tag">DASHBOARD</span>
         <h2>職員ホーム</h2>
       </div>
-      <div class="who">ログイン中：<b>職員（サンプル表示）</b><br>最終ログイン：本日</div>
+      <div class="who">
+        <span id="who-display">ログイン中：<b>―</b></span><br>
+        <a href="#" onclick="staffLogout(); return false;" style="color:var(--teal-dim); text-decoration:underline; font-size:11.5px;">ログアウト（この端末の記憶を削除）</a>
+      </div>
     </div>
 
     <div class="panel" style="margin-bottom:1px;">
@@ -235,24 +296,8 @@ function staffLogin(){
 
     <div class="panel" style="overflow-x:auto;">
       <h3>今週のシフト表</h3>
-      <table class="shift-table">
-        <tr>
-          <th style="text-align:left;">氏名</th>
-          <th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th><th>日</th>
-        </tr>
-        <tr><td class="who">馬奈木（院長）</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td></tr>
-        <tr><td class="who">岸川（副院長）</td><td class="on">終日</td><td class="on">終日</td><td class="off">−</td><td class="on">終日</td><td class="on">終日</td><td class="off">−</td><td class="off">−</td></tr>
-        <tr><td class="who">中野（全科部統括代表）</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td><td class="off">−</td></tr>
-        <tr><td class="who">能登（医師長）</td><td class="on">日勤</td><td class="on">夜勤</td><td class="on">日勤</td><td class="off">−</td><td class="on">日勤</td><td class="on">夜勤</td><td class="off">−</td></tr>
-        <tr><td class="who">石木田（医師）</td><td class="on">日勤</td><td class="off">−</td><td class="on">日勤</td><td class="on">日勤</td><td class="off">−</td><td class="on">日勤</td><td class="on">日勤</td></tr>
-        <tr><td class="who">大田（医師）</td><td class="off">−</td><td class="on">日勤</td><td class="on">日勤</td><td class="on">日勤</td><td class="on">日勤</td><td class="off">−</td><td class="off">−</td></tr>
-        <tr><td class="who">溝部（看護師長）</td><td class="on">日勤</td><td class="on">日勤</td><td class="on">夜勤</td><td class="on">日勤</td><td class="on">日勤</td><td class="off">−</td><td class="on">日勤</td></tr>
-        <tr><td class="who">竹島（看護師）</td><td class="on">日勤</td><td class="on">夜勤</td><td class="off">−</td><td class="on">日勤</td><td class="on">夜勤</td><td class="on">日勤</td><td class="off">−</td></tr>
-        <tr><td class="who">浅見（看護師副助手）</td><td class="off">−</td><td class="on">日勤</td><td class="on">日勤</td><td class="off">−</td><td class="on">日勤</td><td class="on">日勤</td><td class="on">日勤</td></tr>
-        <tr><td class="who">貞守（その他）</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td><td class="on">終日</td></tr>
-        <tr><td class="who">森井（処方せん）</td><td class="on">日勤</td><td class="off">−</td><td class="on">日勤</td><td class="off">−</td><td class="on">日勤</td><td class="off">−</td><td class="off">−</td></tr>
-      </table>
-      <p class="doc-note">※表示は今週分のサンプルです。最新のシフトは各部署にご確認ください。</p>
+      <div id="shift-table-container"></div>
+      <p class="doc-note" id="shift-edit-note">※表示は今週分のサンプルです。最新のシフトは各部署にご確認ください。</p>
     </div>
 
     <div class="panel" style="text-align:center; padding:80px 32px;">
@@ -268,6 +313,76 @@ function staffLogin(){
     </div>
   </div>
 </div>
+
+<script>
+const SHIFT_KEY = 'hospitalShiftData';
+const SHIFT_OPTIONS = ['−','日勤','夜勤','終日'];
+const DEFAULT_SHIFT = [
+  {name:'馬奈木（院長）',           days:['終日','終日','終日','終日','終日','終日','終日']},
+  {name:'岸川（副院長）',           days:['終日','終日','−','終日','終日','−','−']},
+  {name:'中野（全科部統括代表）',   days:['終日','終日','終日','終日','終日','終日','−']},
+  {name:'能登（医師長）',           days:['日勤','夜勤','日勤','−','日勤','夜勤','−']},
+  {name:'石木田（医師）',           days:['日勤','−','日勤','日勤','−','日勤','日勤']},
+  {name:'大田（医師）',             days:['−','日勤','日勤','日勤','日勤','−','−']},
+  {name:'溝部（看護師長）',         days:['日勤','日勤','夜勤','日勤','日勤','−','日勤']},
+  {name:'竹島（看護師）',           days:['日勤','夜勤','−','日勤','夜勤','日勤','−']},
+  {name:'浅見（看護師副助手）',     days:['−','日勤','日勤','−','日勤','日勤','日勤']},
+  {name:'貞守（その他）',           days:['終日','終日','終日','終日','終日','終日','終日']},
+  {name:'森井（処方せん）',         days:['日勤','−','日勤','−','日勤','−','−']},
+];
+
+function loadShiftData(){
+  try{
+    const raw = localStorage.getItem(SHIFT_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_SHIFT));
+}
+
+function saveShiftData(data){
+  try{ localStorage.setItem(SHIFT_KEY, JSON.stringify(data)); }catch(e){}
+}
+
+function renderShiftTable(){
+  const acc = STAFF_ACCOUNTS[currentStaffId];
+  const editable = acc && acc.canEditShift;
+  const data = loadShiftData();
+  const dayLabels = ['月','火','水','木','金','土','日'];
+
+  let html = '<table class="shift-table"><tr><th style="text-align:left;">氏名</th>';
+  dayLabels.forEach(d => html += '<th>'+d+'</th>');
+  html += '</tr>';
+
+  data.forEach((row, ri) => {
+    html += '<tr><td class="who">'+row.name+'</td>';
+    row.days.forEach((val, di) => {
+      if(editable){
+        html += '<td><select onchange="updateShift('+ri+','+di+',this.value)">';
+        SHIFT_OPTIONS.forEach(opt => {
+          html += '<option value="'+opt+'"'+(opt===val ? ' selected' : '')+'>'+opt+'</option>';
+        });
+        html += '</select></td>';
+      } else {
+        const cls = val === '−' ? 'off' : 'on';
+        html += '<td class="'+cls+'">'+val+'</td>';
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</table>';
+
+  document.getElementById('shift-table-container').innerHTML = html;
+  document.getElementById('shift-edit-note').textContent = editable
+    ? '※院長・医師長のみ編集可能です。変更はこの端末に保存されます。'
+    : '※表示は今週分のサンプルです。編集は院長・医師長のみ可能です。';
+}
+
+function updateShift(rowIndex, dayIndex, value){
+  const data = loadShiftData();
+  data[rowIndex].days[dayIndex] = value;
+  saveShiftData(data);
+}
+</script>
 
 </body>
 </html>
