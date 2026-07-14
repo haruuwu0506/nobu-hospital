@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>医療法人能登国際総合科学技術東京都心センター病院</title>
+<meta name="description" content="医療法人能登国際総合科学技術東京都心センター病院の公式紹介ページ。診療科目・スタッフ体制・診療実績・沿革・アクセス情報を掲載しています。">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23132241'/%3E%3Ccircle cx='20' cy='20' r='16' stroke='%232C9C97' stroke-width='1.6' fill='none'/%3E%3Cpath d='M20 12v16M12 20h16' stroke='%232C9C97' stroke-width='1.8'/%3E%3Ccircle cx='20' cy='20' r='3' fill='%23B8945F'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -303,6 +304,13 @@
       linear-gradient(90deg, var(--paper-2) 1px, transparent 1px);
     background-size:28px 28px; background-color:#fff;
   }
+  .mapish .road{position:absolute; background:#E4E7E1;}
+  .mapish .road.h{left:0; right:0; height:10px;}
+  .mapish .road.v{top:0; bottom:0; width:10px;}
+  .mapish .road-label{
+    position:absolute; font-size:9.5px; letter-spacing:0.04em; color:var(--text-soft);
+    background:#fff; padding:1px 5px;
+  }
   .mapish .pin{
     position:absolute; left:52%; top:46%; width:16px; height:16px;
     border-radius:50% 50% 50% 0; background:var(--teal); transform:rotate(-45deg);
@@ -312,6 +320,38 @@
     position:absolute; bottom:16px; left:16px; font-size:11px; color:var(--text-soft);
     background:rgba(255,255,255,0.85); padding:6px 10px;
   }
+
+  /* ---------- history timeline ---------- */
+  .timeline{border-top:1px solid var(--line);}
+  .trow{
+    display:grid; grid-template-columns:110px 1fr; gap:24px;
+    padding:22px 0; border-bottom:1px solid var(--line);
+  }
+  .trow .tyear{font-family:'Space Mono',monospace; font-size:14px; color:var(--teal-dim); padding-top:2px;}
+  .trow .tdesc{font-size:13.5px; color:var(--text);}
+  .trow .tdesc b{color:var(--navy); font-family:'Noto Serif JP',serif; font-weight:600;}
+  @media (max-width:600px){ .trow{grid-template-columns:1fr; gap:4px;} }
+
+  /* ---------- staff voices ---------- */
+  .voices{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media (max-width:820px){ .voices{grid-template-columns:1fr;} }
+  .voice{background:var(--paper); padding:32px 28px;}
+  .voice .vq{font-family:'Noto Serif JP',serif; font-size:14px; color:var(--navy); line-height:1.9; margin-bottom:18px;}
+  .voice .vq::before{content:"“"; color:var(--teal); font-size:20px;}
+  .voice .vwho{font-size:12px; color:var(--text-soft); border-top:1px solid var(--line); padding-top:14px;}
+  .voice .vwho b{color:var(--navy); font-family:'Noto Serif JP',serif;}
+
+  /* ---------- faq ---------- */
+  .faq-list{border-top:1px solid var(--line);}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-item summary{
+    padding:20px 4px; font-size:14px; color:var(--navy); font-family:'Noto Serif JP',serif; font-weight:600;
+    cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; gap:16px;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:"+"; font-family:'Space Mono',monospace; color:var(--teal-dim); font-size:16px; flex:none;}
+  .faq-item[open] summary::after{content:"−";}
+  .faq-item p{padding:0 4px 22px; font-size:13px; color:var(--text-soft); max-width:640px;}
 
   footer{
     background:var(--ink); color:#8A93A3; padding:56px 0 34px; font-size:12.5px;
@@ -350,7 +390,9 @@
         <a href="#staff">スタッフ体制</a>
         <a href="#achievements">診療実績</a>
         <a href="#facts">病院概要</a>
+        <a href="#history">沿革</a>
         <a href="#access">アクセス</a>
+        <a href="#faq">FAQ</a>
         <a href="contact.html">お問い合わせ</a>
         <a href="careers.html">採用情報</a>
       </nav>
@@ -569,6 +611,32 @@
   </div>
 </section>
 
+<section class="pad" id="voices">
+  <div class="wrap">
+    <div class="head-block">
+      <div>
+        <span class="tag">VOICES</span>
+        <h2>スタッフの声</h2>
+      </div>
+      <p>現場で働く職員のコメントを一部ご紹介します。</p>
+    </div>
+    <div class="voices">
+      <div class="voice">
+        <p class="vq">正直、専門はミサイル技術のはずなんですが、なぜか患者さんの診断も任されています。とりあえず「顔」と言っておけば大体丸く収まります。</p>
+        <div class="vwho"><b>石木田</b>　ミサイル技術部</div>
+      </div>
+      <div class="voice">
+        <p class="vq">給料はジンバブエドル建てですが、円換算するとどうなるのか誰も計算したことがありません。清掃も手術準備も飯の準備も全部やります。</p>
+        <div class="vwho"><b>貞守</b>　その他すべて担当</div>
+      </div>
+      <div class="voice">
+        <p class="vq">外科・内科・脳神経外科を兼任していますが、正直どれが本業か自分でもわからなくなる瞬間があります。それでも患者さんを救えた時はやりがいを感じます。</p>
+        <div class="vwho"><b>能登</b>　医師長</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="alt pad" id="achievements">
   <div class="wrap">
     <div class="head-block">
@@ -621,6 +689,35 @@
         </div>
       </div>
     </div>
+
+    <div class="case-card">
+      <div class="case-head">
+        <span class="name">透明化症候群（国際指定難病）の治療</span>
+        <span class="tagline">CASE.002 — 治療完了</span>
+      </div>
+      <div class="case-body">
+        <div class="case-row">
+          <span class="k">発症経過</span>
+          <span class="v">令和7年頃より、皮膚が徐々に透明になっていく症状が出現。</span>
+        </div>
+        <div class="case-row">
+          <span class="k">当初の診断</span>
+          <span class="v">大田医師（顔面整形部）による診察では「日焼け不足」と診断される。</span>
+        </div>
+        <div class="case-row">
+          <span class="k">経過</span>
+          <span class="v">症状は全身に進行し、ほぼ透明化した状態で院内共有。ミサイル技術部・石木田医師が再診し「特殊顔面変異」と判定した。</span>
+        </div>
+        <div class="case-row">
+          <span class="k">治療法</span>
+          <span class="v">顔面整形部・大田医師の執刀による皮膚再構成手術を実施。</span>
+        </div>
+        <div class="case-row">
+          <span class="k">結果</span>
+          <span class="v">透明化は解消し、無事退院。現在は外来にて定期検診のみを継続している。</span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -646,6 +743,48 @@
   </div>
 </section>
 
+<section class="alt pad" id="history">
+  <div class="wrap">
+    <div class="head-block">
+      <div>
+        <span class="tag">HISTORY</span>
+        <h2>沿革</h2>
+      </div>
+      <p>創立200年の歩みの一部をご紹介します。</p>
+    </div>
+    <div class="timeline">
+      <div class="trow">
+        <span class="tyear">1826</span>
+        <span class="tdesc"><b>開設</b>　文政9年、前身となる診療所を現在地に開設。</span>
+      </div>
+      <div class="trow">
+        <span class="tyear">1912</span>
+        <span class="tdesc"><b>総合病院化</b>　複数の診療科を統合し、総合病院として改組。</span>
+      </div>
+      <div class="trow">
+        <span class="tyear">1987</span>
+        <span class="tdesc"><b>救命救急センター開設</b>　三次救急指定病院として認可を取得。</span>
+      </div>
+      <div class="trow">
+        <span class="tyear">2005</span>
+        <span class="tdesc"><b>ミサイル技術部 発足</b>　難病の原因究明を目的とした研究部門を新設。</span>
+      </div>
+      <div class="trow">
+        <span class="tyear">2018</span>
+        <span class="tdesc"><b>再生医療センター開設</b>　自己組織を用いた再生医療の臨床応用を開始。</span>
+      </div>
+      <div class="trow">
+        <span class="tyear">2023</span>
+        <span class="tdesc"><b>難病対策本部 設置</b>　国際指定難病への対応体制を院内に整備。</span>
+      </div>
+      <div class="trow">
+        <span class="tyear">2026</span>
+        <span class="tdesc"><b>創立200周年</b>　病床数6万床体制へ拡大し、現在に至る。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="pad" id="access">
   <div class="wrap">
     <div class="head-block">
@@ -665,9 +804,52 @@
         <div class="item"><span class="k">面会時間</span><span>13:00–19:00</span></div>
       </div>
       <div class="mapish">
+        <div class="road h" style="top:28%;"></div>
+        <div class="road h" style="top:74%;"></div>
+        <div class="road v" style="left:38%;"></div>
+        <div class="road-label" style="top:calc(28% - 16px); left:8px;">アシム大通り</div>
+        <div class="road-label" style="left:calc(38% + 8px); top:8px;">竹島駅通り</div>
         <div class="pin"></div>
         <div class="cap">中野県竹島市金森区アシム1-3-1 付近</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt pad" id="faq">
+  <div class="wrap">
+    <div class="head-block">
+      <div>
+        <span class="tag">FAQ</span>
+        <h2>よくあるご質問</h2>
+      </div>
+      <p>受診・費用・面会などについてよくいただくご質問です。</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>予約なしでも受診できますか？</summary>
+        <p>可能です。当院は平日24時間（0:00〜0:00）受付しておりますので、いつでもお越しいただけます。</p>
+      </details>
+      <details class="faq-item">
+        <summary>診療費はどの通貨で支払えますか？</summary>
+        <p>円のほか、米ドル・ジンバブエドルなど各種通貨に対応しております。詳細は受付窓口にてご確認ください。</p>
+      </details>
+      <details class="faq-item">
+        <summary>受診の優先順位はどのように決まりますか？</summary>
+        <p>症状の緊急度を基本としますが、場合により資力または容姿を優先して治療順序を決定することがあります。あらかじめご了承ください。</p>
+      </details>
+      <details class="faq-item">
+        <summary>ミサイル技術部とはどのような診療科ですか？</summary>
+        <p>難病の原因究明および特殊治療法の研究・開発を担当する部門です。診断業務も一部兼任しています。</p>
+      </details>
+      <details class="faq-item">
+        <summary>面会時間を教えてください。</summary>
+        <p>面会時間は13:00〜19:00です。それ以外の時間帯は救急外来のみの対応となります。</p>
+      </details>
+      <details class="faq-item">
+        <summary>職員として応募することはできますか？</summary>
+        <p>随時募集しております。詳しくは採用情報ページをご覧のうえ、メールにてご連絡ください。</p>
+      </details>
     </div>
   </div>
 </section>
