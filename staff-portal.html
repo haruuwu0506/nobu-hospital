@@ -244,17 +244,18 @@ function initGithubSettingsUI(){
   if(getGithubToken()){
     setGithubStatus('同期しています…', false);
   } else {
-    setGithubStatus('トークンが未設定です（コード内のGITHUB_TOKENを設定してください）。この端末内だけの保存になります。', true);
+    setGithubStatus('トークンが未設定です（assets/setting.json のgithubTokenを設定してください）。この端末内だけの保存になります。', true);
   }
 }
 
-function staffLogin(){
+async function staffLogin(){
   const id = document.getElementById('login-id').value.trim();
   const pw = document.getElementById('login-pw').value;
   const remember = document.getElementById('login-remember').checked;
   const acc = STAFF_ACCOUNTS[id];
   if(acc && acc.password === pw){
     if(remember){ localStorage.setItem(REMEMBER_KEY, id); }
+    await configReady;
     enterDashboard(id);
   } else {
     document.getElementById('login-error').style.display = 'block';
@@ -274,7 +275,8 @@ function staffLogout(){
 (function(){
   const rememberedId = localStorage.getItem(REMEMBER_KEY);
   if(rememberedId && STAFF_ACCOUNTS[rememberedId]){
-    window.addEventListener('DOMContentLoaded', function(){
+    window.addEventListener('DOMContentLoaded', async function(){
+      await configReady;
       enterDashboard(rememberedId);
     });
   }
@@ -358,18 +360,30 @@ function staffLogout(){
 
 <script>
 // ==================================================================
-// GitHub 連携設定
+// GitHub 連携設定（assets/setting.json から読み込み）
 // ==================================================================
-const GITHUB_OWNER = 'haruuwu0506';
-const GITHUB_REPO = 'hospital-data';
-const GITHUB_BRANCH = 'main';
+let GITHUB_OWNER = '';
+let GITHUB_REPO = '';
+let GITHUB_BRANCH = 'main';
+let GITHUB_TOKEN = '';
 const SHIFT_PATH = 'data/shift.json';
 const BOARD_PATH = 'data/board.json';
 
-// ▼▼▼ ここに発行したFine-grained Personal Access Tokenを貼り付けてください ▼▼▼
-const GITHUB_TOKEN = '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';
-// ▲▲▲ このファイルはリポジトリを非公開にしていても、GitHub Pagesで公開すると
-//      ページのソースを見れば誰でもこのトークンを読み取れる状態になります ▲▲▲
+async function loadGithubConfig(){
+  try{
+    const res = await fetch('assets/setting.json');
+    if(!res.ok) throw new Error('setting.json not found');
+    const cfg = await res.json();
+    GITHUB_OWNER = cfg.githubOwner || '';
+    GITHUB_REPO = cfg.githubRepo || '';
+    GITHUB_BRANCH = cfg.githubBranch || 'main';
+    GITHUB_TOKEN = cfg.githubToken || '';
+  }catch(e){
+    console.warn('GitHub設定の読み込みに失敗しました:', e.message);
+  }
+}
+// ページ読み込み時に一度だけ設定を取得しておく
+const configReady = loadGithubConfig();
 
 function getGithubToken(){
   return (GITHUB_TOKEN && GITHUB_TOKEN.indexOf('PASTE_YOUR') !== 0) ? GITHUB_TOKEN : '';
