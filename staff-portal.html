@@ -144,6 +144,27 @@
   .modal-note{
     margin-top:34px; padding:18px 22px; border:1px dashed var(--line); font-size:11.5px; color:var(--text-soft);
   }
+
+  /* ---------- director board ---------- */
+  .board-post{padding:18px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:16px;}
+  .board-post:last-child{border-bottom:none;}
+  .board-post .bdate{font-family:'Space Mono',monospace; font-size:11px; color:var(--teal-dim); white-space:nowrap; padding-top:2px;}
+  .board-post .btext{font-size:13px; color:var(--text); flex:1; white-space:pre-wrap; line-height:1.85;}
+  .board-post .bdel{
+    font-size:11px; color:#B23A3A; background:none; border:1px solid #B23A3A; padding:4px 10px;
+    cursor:pointer; height:fit-content; white-space:nowrap;
+  }
+  .board-empty{font-size:12.5px; color:var(--text-soft); padding:12px 0;}
+  .board-form textarea{
+    width:100%; border:1px solid var(--line); background:var(--paper); padding:12px 14px;
+    font-size:13px; font-family:'Noto Sans JP',sans-serif; color:var(--text); min-height:80px; resize:vertical;
+  }
+  .board-form textarea:focus{outline:none; border-color:var(--teal);}
+  .board-post-btn{
+    background:var(--navy); color:#fff; border:none; padding:10px 22px; margin-top:12px;
+    font-size:12.5px; letter-spacing:0.04em; cursor:pointer; font-family:'Noto Sans JP',sans-serif;
+  }
+  .board-post-btn:hover{background:var(--teal-dim);}
 </style>
 </head>
 <body>
@@ -191,17 +212,17 @@
 <script>
 // ---- 職員アカウント一覧 ----
 const STAFF_ACCOUNTS = {
-  'N-87831': {password:'nobuasim',   name:'馬奈木',  role:'院長',           canEditShift:true},
-  'N-10002': {password:'kishikawa2', name:'岸川',    role:'副院長',         canEditShift:false},
-  'N-10003': {password:'nakano3',    name:'中野',    role:'全科部統括代表', canEditShift:false},
-  'N-10004': {password:'noto4',      name:'能登',    role:'医師長',         canEditShift:true},
-  'N-10005': {password:'ishikida5',  name:'石木田',  role:'医師',           canEditShift:false},
-  'N-10006': {password:'ota6',       name:'大田',    role:'医師',           canEditShift:false},
-  'N-10007': {password:'mizobe7',    name:'溝部',    role:'看護師長',       canEditShift:false},
-  'N-10008': {password:'takeshima8', name:'竹島',    role:'看護師',         canEditShift:false},
-  'N-10009': {password:'asami9',     name:'浅見',    role:'看護師副助手',   canEditShift:false},
-  'N-10010': {password:'sadamori10', name:'貞守',    role:'その他',         canEditShift:false},
-  'N-10011': {password:'morii11',    name:'森井',    role:'処方せん',       canEditShift:false},
+  'N-87831': {password:'nobuasim',   name:'馬奈木',  role:'院長',           canEditShift:true,  isDirector:true},
+  'N-10002': {password:'kishikawa2', name:'岸川',    role:'副院長',         canEditShift:false, isDirector:false},
+  'N-10003': {password:'nakano3',    name:'中野',    role:'全科部統括代表', canEditShift:false, isDirector:false},
+  'N-10004': {password:'noto4',      name:'能登',    role:'医師長',         canEditShift:true,  isDirector:true},
+  'N-10005': {password:'ishikida5',  name:'石木田',  role:'医師',           canEditShift:false, isDirector:false},
+  'N-10006': {password:'ota6',       name:'大田',    role:'医師',           canEditShift:false, isDirector:false},
+  'N-10007': {password:'mizobe7',    name:'溝部',    role:'看護師長',       canEditShift:false, isDirector:false},
+  'N-10008': {password:'takeshima8', name:'竹島',    role:'看護師',         canEditShift:false, isDirector:false},
+  'N-10009': {password:'asami9',     name:'浅見',    role:'看護師副助手',   canEditShift:false, isDirector:false},
+  'N-10010': {password:'sadamori10', name:'貞守',    role:'その他',         canEditShift:false, isDirector:false},
+  'N-10011': {password:'morii11',    name:'森井',    role:'処方せん',       canEditShift:false, isDirector:false},
 };
 
 const REMEMBER_KEY = 'hospitalStaffRememberedId';
@@ -214,7 +235,17 @@ function enterDashboard(id){
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('who-display').innerHTML =
     'ログイン中：<b>' + acc.name + '（' + acc.role + '）</b><br>職員ID：' + id;
+  initGithubSettingsUI();
   renderShiftTable();
+  renderBoard();
+}
+
+function initGithubSettingsUI(){
+  if(getGithubToken()){
+    setGithubStatus('同期しています…', false);
+  } else {
+    setGithubStatus('トークンが未設定です（コード内のGITHUB_TOKENを設定してください）。この端末内だけの保存になります。', true);
+  }
 }
 
 function staffLogin(){
@@ -294,10 +325,21 @@ function staffLogout(){
       <p class="doc-note">※院内関係者限定の書類です。取り扱いにはご注意ください。</p>
     </div>
 
+    <div class="panel" id="github-status-panel" style="padding:18px 32px;">
+      <span style="font-size:12px; color:var(--text-soft);">GitHub同期状況（<span style="font-family:'Space Mono',monospace;">haruuwu0506/hospital-data</span>）：</span>
+      <span id="github-status" style="font-size:12px; color:var(--text-soft);"></span>
+    </div>
+
     <div class="panel" style="overflow-x:auto;">
       <h3>今週のシフト表</h3>
       <div id="shift-table-container"></div>
       <p class="doc-note" id="shift-edit-note">※表示は今週分のサンプルです。最新のシフトは各部署にご確認ください。</p>
+    </div>
+
+    <div class="panel">
+      <h3>院長掲示板</h3>
+      <div id="board-form-container"></div>
+      <div id="board-list-container"></div>
     </div>
 
     <div class="panel" style="text-align:center; padding:80px 32px;">
@@ -315,6 +357,75 @@ function staffLogout(){
 </div>
 
 <script>
+// ==================================================================
+// GitHub 連携設定
+// ==================================================================
+const GITHUB_OWNER = 'haruuwu0506';
+const GITHUB_REPO = 'hospital-data';
+const GITHUB_BRANCH = 'main';
+const SHIFT_PATH = 'data/shift.json';
+const BOARD_PATH = 'data/board.json';
+
+// ▼▼▼ ここに発行したFine-grained Personal Access Tokenを貼り付けてください ▼▼▼
+const GITHUB_TOKEN = 'PASTE_YOUR_GITHUB_TOKEN_HERE';
+// ▲▲▲ このファイルはリポジトリを非公開にしていても、GitHub Pagesで公開すると
+//      ページのソースを見れば誰でもこのトークンを読み取れる状態になります ▲▲▲
+
+function getGithubToken(){
+  return (GITHUB_TOKEN && GITHUB_TOKEN.indexOf('PASTE_YOUR') !== 0) ? GITHUB_TOKEN : '';
+}
+
+function setGithubStatus(msg, isError){
+  const el = document.getElementById('github-status');
+  if(!el) return;
+  el.textContent = msg;
+  el.style.color = isError ? '#B23A3A' : 'var(--text-soft)';
+}
+
+function utf8ToB64(str){
+  return btoa(unescape(encodeURIComponent(str)));
+}
+function b64ToUtf8(str){
+  return decodeURIComponent(escape(atob(str.replace(/\n/g,''))));
+}
+
+async function githubGetFile(path){
+  const token = getGithubToken();
+  if(!token) return null;
+  const url = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + path + '?ref=' + GITHUB_BRANCH;
+  const res = await fetch(url, {
+    headers:{ 'Authorization':'Bearer ' + token, 'Accept':'application/vnd.github+json' }
+  });
+  if(!res.ok) throw new Error('読み込み失敗（' + res.status + '）');
+  const data = await res.json();
+  return { json: JSON.parse(b64ToUtf8(data.content)), sha: data.sha };
+}
+
+async function githubPutFile(path, jsonData, sha, message){
+  const token = getGithubToken();
+  if(!token) throw new Error('トークンが設定されていません');
+  const url = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + path;
+  const body = {
+    message: message || ('update ' + path),
+    content: utf8ToB64(JSON.stringify(jsonData, null, 2)),
+    branch: GITHUB_BRANCH
+  };
+  if(sha) body.sha = sha;
+  const res = await fetch(url, {
+    method:'PUT',
+    headers:{ 'Authorization':'Bearer ' + token, 'Accept':'application/vnd.github+json', 'Content-Type':'application/json' },
+    body: JSON.stringify(body)
+  });
+  if(!res.ok){
+    const t = await res.text();
+    throw new Error('保存失敗（' + res.status + '）: ' + t);
+  }
+  return await res.json();
+}
+
+// ==================================================================
+// シフト表
+// ==================================================================
 const SHIFT_KEY = 'hospitalShiftData';
 const SHIFT_OPTIONS = ['−','日勤','夜勤','終日'];
 const DEFAULT_SHIFT = [
@@ -330,25 +441,39 @@ const DEFAULT_SHIFT = [
   {name:'貞守（その他）',           days:['終日','終日','終日','終日','終日','終日','終日']},
   {name:'森井（処方せん）',         days:['日勤','−','日勤','−','日勤','−','−']},
 ];
+let shiftSha = null;
 
-function loadShiftData(){
+function loadShiftLocal(){
   try{
     const raw = localStorage.getItem(SHIFT_KEY);
     if(raw) return JSON.parse(raw);
   }catch(e){}
   return JSON.parse(JSON.stringify(DEFAULT_SHIFT));
 }
-
-function saveShiftData(data){
+function saveShiftLocal(data){
   try{ localStorage.setItem(SHIFT_KEY, JSON.stringify(data)); }catch(e){}
 }
 
-function renderShiftTable(){
+async function renderShiftTable(){
   const acc = STAFF_ACCOUNTS[currentStaffId];
   const editable = acc && acc.canEditShift;
-  const data = loadShiftData();
-  const dayLabels = ['月','火','水','木','金','土','日'];
+  let data;
 
+  if(getGithubToken()){
+    try{
+      const result = await githubGetFile(SHIFT_PATH);
+      data = result.json;
+      shiftSha = result.sha;
+      setGithubStatus('GitHubと同期済みです。', false);
+    }catch(e){
+      data = loadShiftLocal();
+      setGithubStatus('GitHub読み込みに失敗しました。この端末の保存分を表示しています。（' + e.message + '）', true);
+    }
+  } else {
+    data = loadShiftLocal();
+  }
+
+  const dayLabels = ['月','火','水','木','金','土','日'];
   let html = '<table class="shift-table"><tr><th style="text-align:left;">氏名</th>';
   dayLabels.forEach(d => html += '<th>'+d+'</th>');
   html += '</tr>';
@@ -373,14 +498,147 @@ function renderShiftTable(){
 
   document.getElementById('shift-table-container').innerHTML = html;
   document.getElementById('shift-edit-note').textContent = editable
-    ? '※院長・医師長のみ編集可能です。変更はこの端末に保存されます。'
-    : '※表示は今週分のサンプルです。編集は院長・医師長のみ可能です。';
+    ? '※院長・医師長のみ編集可能です。' + (getGithubToken() ? 'GitHubに保存されます。' : 'この端末に保存されます。')
+    : '※編集は院長・医師長のみ可能です。';
 }
 
-function updateShift(rowIndex, dayIndex, value){
-  const data = loadShiftData();
-  data[rowIndex].days[dayIndex] = value;
-  saveShiftData(data);
+async function updateShift(rowIndex, dayIndex, value){
+  if(getGithubToken()){
+    try{
+      const result = await githubGetFile(SHIFT_PATH);
+      const data = result.json;
+      data[rowIndex].days[dayIndex] = value;
+      const put = await githubPutFile(SHIFT_PATH, data, result.sha, 'シフト表を更新');
+      shiftSha = put.content.sha;
+      setGithubStatus('GitHubに保存しました。', false);
+    }catch(e){
+      setGithubStatus('GitHubへの保存に失敗しました。（' + e.message + '）', true);
+    }
+  } else {
+    const data = loadShiftLocal();
+    data[rowIndex].days[dayIndex] = value;
+    saveShiftLocal(data);
+  }
+}
+
+// ==================================================================
+// 院長掲示板
+// ==================================================================
+const BOARD_KEY = 'hospitalDirectorBoard';
+const DEFAULT_BOARD = [
+  {date:'2026.07.10', text:'来週の院内清掃について、貞守くんに一任します。よろしく頼みます。'},
+  {date:'2026.07.05', text:'創立200周年記念式典の準備を進めています。詳細は追ってお知らせします。'},
+];
+let boardSha = null;
+
+function loadBoardLocal(){
+  try{
+    const raw = localStorage.getItem(BOARD_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_BOARD));
+}
+function saveBoardLocal(data){
+  try{ localStorage.setItem(BOARD_KEY, JSON.stringify(data)); }catch(e){}
+}
+
+async function renderBoard(){
+  const acc = STAFF_ACCOUNTS[currentStaffId];
+  const isDirector = acc && acc.isDirector;
+  let posts;
+
+  if(getGithubToken()){
+    try{
+      const result = await githubGetFile(BOARD_PATH);
+      posts = result.json;
+      boardSha = result.sha;
+    }catch(e){
+      posts = loadBoardLocal();
+      setGithubStatus('GitHub読み込みに失敗しました。この端末の保存分を表示しています。（' + e.message + '）', true);
+    }
+  } else {
+    posts = loadBoardLocal();
+  }
+
+  const formEl = document.getElementById('board-form-container');
+  if(isDirector){
+    formEl.innerHTML =
+      '<div class="board-form">' +
+      '<textarea id="board-input" placeholder="全職員に向けたメッセージを入力してください"></textarea>' +
+      '<button class="board-post-btn" onclick="postBoard();">投稿する</button>' +
+      '</div>';
+  } else {
+    formEl.innerHTML = '';
+  }
+
+  const listEl = document.getElementById('board-list-container');
+  if(!posts || posts.length === 0){
+    listEl.innerHTML = '<p class="board-empty">まだ投稿はありません。</p>';
+    return;
+  }
+  let html = '';
+  posts.forEach((post, i) => {
+    html += '<div class="board-post">' +
+      '<span class="bdate">' + post.date + '</span>' +
+      '<span class="btext">' + escapeHtml(post.text) + '</span>' +
+      (isDirector ? '<button class="bdel" onclick="deleteBoardPost(' + i + ');">削除</button>' : '') +
+      '</div>';
+  });
+  listEl.innerHTML = html;
+}
+
+async function postBoard(){
+  const input = document.getElementById('board-input');
+  const text = input.value.trim();
+  if(!text) return;
+  const today = new Date();
+  const dateStr = today.getFullYear() + '.' + String(today.getMonth()+1).padStart(2,'0') + '.' + String(today.getDate()).padStart(2,'0');
+  const newPost = {date:dateStr, text:text};
+
+  if(getGithubToken()){
+    try{
+      const result = await githubGetFile(BOARD_PATH);
+      const posts = result.json;
+      posts.unshift(newPost);
+      const put = await githubPutFile(BOARD_PATH, posts, result.sha, '掲示板に投稿');
+      boardSha = put.content.sha;
+      setGithubStatus('GitHubに投稿しました。', false);
+    }catch(e){
+      setGithubStatus('GitHubへの投稿に失敗しました。（' + e.message + '）', true);
+    }
+  } else {
+    const posts = loadBoardLocal();
+    posts.unshift(newPost);
+    saveBoardLocal(posts);
+  }
+  input.value = '';
+  renderBoard();
+}
+
+async function deleteBoardPost(index){
+  if(getGithubToken()){
+    try{
+      const result = await githubGetFile(BOARD_PATH);
+      const posts = result.json;
+      posts.splice(index, 1);
+      const put = await githubPutFile(BOARD_PATH, posts, result.sha, '掲示板の投稿を削除');
+      boardSha = put.content.sha;
+      setGithubStatus('GitHubに反映しました。', false);
+    }catch(e){
+      setGithubStatus('GitHubへの反映に失敗しました。（' + e.message + '）', true);
+    }
+  } else {
+    const posts = loadBoardLocal();
+    posts.splice(index, 1);
+    saveBoardLocal(posts);
+  }
+  renderBoard();
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 }
 </script>
 
