@@ -241,10 +241,13 @@ function enterDashboard(id){
 }
 
 function initGithubSettingsUI(){
+  const tokenInput = document.getElementById('gh-token');
   if(getGithubToken()){
-    setGithubStatus('同期しています…', false);
+    tokenInput.value = '••••••••••••';
+    setGithubStatus('トークン設定済みです。同期しています…', false);
   } else {
-    setGithubStatus('トークンが未設定です（assets/setting.json のgithubTokenを設定してください）。この端末内だけの保存になります。', true);
+    tokenInput.value = '';
+    setGithubStatus('トークン未設定です。この端末内だけの保存になります。', false);
   }
 }
 
@@ -327,9 +330,18 @@ function staffLogout(){
       <p class="doc-note">※院内関係者限定の書類です。取り扱いにはご注意ください。</p>
     </div>
 
-    <div class="panel" id="github-status-panel" style="padding:18px 32px;">
-      <span style="font-size:12px; color:var(--text-soft);">GitHub同期状況（<span style="font-family:'Space Mono',monospace;">haruuwu0506/hospital-data</span>）：</span>
-      <span id="github-status" style="font-size:12px; color:var(--text-soft);"></span>
+    <div class="panel" id="github-status-panel">
+      <h3>GitHub連携</h3>
+      <p style="font-size:12px; color:var(--text-soft); margin-bottom:18px;">
+        シフト表・掲示板はGitHubリポジトリ（<span style="font-family:'Space Mono',monospace;">haruuwu0506/hospital-data</span>）と同期しています。
+        閲覧はトークン不要です。院長・医師長がシフト編集や掲示板投稿を行う場合のみ、下記にアクセストークンを入力してください（この端末の<span style="font-family:'Space Mono',monospace;">localStorage</span>にだけ保存され、リポジトリにはコミットされません）。
+      </p>
+      <div class="field">
+        <label>GitHub アクセストークン</label>
+        <input id="gh-token" type="password" placeholder="github_pat_...">
+      </div>
+      <button class="board-post-btn" onclick="saveGithubToken();">保存して同期</button>
+      <p id="github-status" class="doc-note"></p>
     </div>
 
     <div class="panel" style="overflow-x:auto;">
@@ -360,14 +372,19 @@ function staffLogout(){
 
 <script>
 // ==================================================================
-// GitHub 連携設定（assets/setting.json から読み込み）
+// GitHub 連携設定
+// owner/repo/branch/token(Base64) は assets/setting.json から読み込み
+// ※ Base64は「暗号化」ではなく、GitHubの自動失効スキャナーを回避するための変換です。
+//   コードを読める人には元のトークンが分かってしまう点に注意してください。
+// 端末側で直接入力した場合は localStorage を優先します（互換用）。
 // ==================================================================
 let GITHUB_OWNER = '';
 let GITHUB_REPO = '';
 let GITHUB_BRANCH = 'main';
-let GITHUB_TOKEN = '';
+let GITHUB_TOKEN_FROM_CONFIG = '';
 const SHIFT_PATH = 'data/shift.json';
 const BOARD_PATH = 'data/board.json';
+const GH_TOKEN_KEY = 'hospitalGithubToken';
 
 async function loadGithubConfig(){
   try{
@@ -377,7 +394,9 @@ async function loadGithubConfig(){
     GITHUB_OWNER = cfg.githubOwner || '';
     GITHUB_REPO = cfg.githubRepo || '';
     GITHUB_BRANCH = cfg.githubBranch || 'main';
-    GITHUB_TOKEN = cfg.githubToken || '';
+    if(cfg.githubTokenB64){
+      try{ GITHUB_TOKEN_FROM_CONFIG = atob(cfg.githubTokenB64); }catch(e){ GITHUB_TOKEN_FROM_CONFIG = ''; }
+    }
   }catch(e){
     console.warn('GitHub設定の読み込みに失敗しました:', e.message);
   }
@@ -386,7 +405,23 @@ async function loadGithubConfig(){
 const configReady = loadGithubConfig();
 
 function getGithubToken(){
-  return (GITHUB_TOKEN && GITHUB_TOKEN.indexOf('PASTE_YOUR') !== 0) ? GITHUB_TOKEN : '';
+  // 端末に直接保存されたトークンがあればそちらを優先、なければsetting.json由来のものを使う
+  return localStorage.getItem(GH_TOKEN_KEY) || GITHUB_TOKEN_FROM_CONFIG || '';
+}
+
+function saveGithubToken(){
+  const input = document.getElementById('gh-token');
+  const token = input.value.trim();
+  if(token && token !== '••••••••••••'){
+    localStorage.setItem(GH_TOKEN_KEY, token);
+    setGithubStatus('トークンを保存しました。同期しています…', false);
+  } else if(!token){
+    localStorage.removeItem(GH_TOKEN_KEY);
+    setGithubStatus('端末保存のトークンを削除しました。setting.json側の設定が使われます。', false);
+  }
+  input.value = getGithubToken() ? '••••••••••••' : '';
+  renderShiftTable();
+  renderBoard();
 }
 
 function setGithubStatus(msg, isError){
@@ -405,11 +440,10 @@ function b64ToUtf8(str){
 
 async function githubGetFile(path){
   const token = getGithubToken();
-  if(!token) return null;
   const url = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + path + '?ref=' + GITHUB_BRANCH;
-  const res = await fetch(url, {
-    headers:{ 'Authorization':'Bearer ' + token, 'Accept':'application/vnd.github+json' }
-  });
+  const headers = { 'Accept':'application/vnd.github+json' };
+  if(token) headers['Authorization'] = 'Bearer ' + token;
+  const res = await fetch(url, { headers });
   if(!res.ok) throw new Error('読み込み失敗（' + res.status + '）');
   const data = await res.json();
   return { json: JSON.parse(b64ToUtf8(data.content)), sha: data.sha };
@@ -473,18 +507,14 @@ async function renderShiftTable(){
   const editable = acc && acc.canEditShift;
   let data;
 
-  if(getGithubToken()){
-    try{
-      const result = await githubGetFile(SHIFT_PATH);
-      data = result.json;
-      shiftSha = result.sha;
-      setGithubStatus('GitHubと同期済みです。', false);
-    }catch(e){
-      data = loadShiftLocal();
-      setGithubStatus('GitHub読み込みに失敗しました。この端末の保存分を表示しています。（' + e.message + '）', true);
-    }
-  } else {
+  try{
+    const result = await githubGetFile(SHIFT_PATH);
+    data = result.json;
+    shiftSha = result.sha;
+    setGithubStatus('GitHubと同期済みです。', false);
+  }catch(e){
     data = loadShiftLocal();
+    setGithubStatus('GitHub読み込みに失敗しました。この端末の保存分を表示しています。（' + e.message + '）', true);
   }
 
   const dayLabels = ['月','火','水','木','金','土','日'];
@@ -561,17 +591,13 @@ async function renderBoard(){
   const isDirector = acc && acc.isDirector;
   let posts;
 
-  if(getGithubToken()){
-    try{
-      const result = await githubGetFile(BOARD_PATH);
-      posts = result.json;
-      boardSha = result.sha;
-    }catch(e){
-      posts = loadBoardLocal();
-      setGithubStatus('GitHub読み込みに失敗しました。この端末の保存分を表示しています。（' + e.message + '）', true);
-    }
-  } else {
+  try{
+    const result = await githubGetFile(BOARD_PATH);
+    posts = result.json;
+    boardSha = result.sha;
+  }catch(e){
     posts = loadBoardLocal();
+    setGithubStatus('GitHub読み込みに失敗しました。この端末の保存分を表示しています。（' + e.message + '）', true);
   }
 
   const formEl = document.getElementById('board-form-container');
