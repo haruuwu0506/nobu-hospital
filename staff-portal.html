@@ -241,6 +241,13 @@ function enterDashboard(id){
 }
 
 function initGithubSettingsUI(){
+  const acc = STAFF_ACCOUNTS[currentStaffId];
+  const panel = document.getElementById('github-status-panel');
+  if(!acc || !acc.canEditShift){
+    panel.style.display = 'none';
+    return;
+  }
+  panel.style.display = 'block';
   const tokenInput = document.getElementById('gh-token');
   if(getGithubToken()){
     tokenInput.value = '••••••••••••';
@@ -570,8 +577,8 @@ async function updateShift(rowIndex, dayIndex, value){
 // ==================================================================
 const BOARD_KEY = 'hospitalDirectorBoard';
 const DEFAULT_BOARD = [
-  {date:'2026.07.10', text:'来週の院内清掃について、貞守くんに一任します。よろしく頼みます。'},
-  {date:'2026.07.05', text:'創立200周年記念式典の準備を進めています。詳細は追ってお知らせします。'},
+  {date:'2026.07.10', author:'馬奈木', text:'来週の院内清掃について、貞守くんに一任します。よろしく頼みます。'},
+  {date:'2026.07.05', author:'馬奈木', text:'創立200周年記念式典の準備を進めています。詳細は追ってお知らせします。'},
 ];
 let boardSha = null;
 
@@ -619,7 +626,7 @@ async function renderBoard(){
   let html = '';
   posts.forEach((post, i) => {
     html += '<div class="board-post">' +
-      '<span class="bdate">' + post.date + '</span>' +
+      '<span class="bdate">' + post.date + (post.author ? '<br><b style="color:var(--navy);">' + escapeHtml(post.author) + '</b>' : '') + '</span>' +
       '<span class="btext">' + escapeHtml(post.text) + '</span>' +
       (isDirector ? '<button class="bdel" onclick="deleteBoardPost(' + i + ');">削除</button>' : '') +
       '</div>';
@@ -631,9 +638,10 @@ async function postBoard(){
   const input = document.getElementById('board-input');
   const text = input.value.trim();
   if(!text) return;
+  const acc = STAFF_ACCOUNTS[currentStaffId];
   const today = new Date();
   const dateStr = today.getFullYear() + '.' + String(today.getMonth()+1).padStart(2,'0') + '.' + String(today.getDate()).padStart(2,'0');
-  const newPost = {date:dateStr, text:text};
+  const newPost = {date:dateStr, author:(acc ? acc.name : '不明'), text:text};
 
   if(getGithubToken()){
     try{
