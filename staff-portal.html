@@ -149,6 +149,10 @@
   .board-post{padding:18px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:16px;}
   .board-post:last-child{border-bottom:none;}
   .board-post .bdate{font-family:'Space Mono',monospace; font-size:11px; color:var(--teal-dim); white-space:nowrap; padding-top:2px;}
+  .new-badge{
+    display:inline-block; background:var(--gold); color:#fff; font-size:9.5px; letter-spacing:0.04em;
+    padding:2px 6px; margin-left:6px; vertical-align:middle; font-family:'Noto Sans JP',sans-serif;
+  }
   .board-post .btext{font-size:13px; color:var(--text); flex:1; white-space:pre-wrap; line-height:1.85;}
   .board-post .bdel{
     font-size:11px; color:#B23A3A; background:none; border:1px solid #B23A3A; padding:4px 10px;
@@ -238,6 +242,24 @@ function enterDashboard(id){
   initGithubSettingsUI();
   renderShiftTable();
   renderBoard();
+  startPolling();
+}
+
+// ---- 自動更新（ポーリング）----
+const POLL_INTERVAL_MS = 60000; // 60秒ごと（GitHub APIの無料枠を考慮）
+let pollTimer = null;
+
+function startPolling(){
+  stopPolling();
+  pollTimer = setInterval(() => {
+    if(document.hidden) return; // タブが非表示の間は通信しない
+    renderShiftTable();
+    renderBoard();
+  }, POLL_INTERVAL_MS);
+}
+
+function stopPolling(){
+  if(pollTimer){ clearInterval(pollTimer); pollTimer = null; }
 }
 
 function initGithubSettingsUI(){
@@ -275,6 +297,7 @@ async function staffLogin(){
 function staffLogout(){
   localStorage.removeItem(REMEMBER_KEY);
   currentStaffId = null;
+  stopPolling();
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('login-id').value = '';
@@ -352,13 +375,13 @@ function staffLogout(){
     </div>
 
     <div class="panel" style="overflow-x:auto;">
-      <h3>今週のシフト表</h3>
+      <h3>今週のシフト表　<span id="shift-updated" style="font-size:10.5px; font-weight:400; color:var(--text-soft);"></span></h3>
       <div id="shift-table-container"></div>
       <p class="doc-note" id="shift-edit-note">※表示は今週分のサンプルです。最新のシフトは各部署にご確認ください。</p>
     </div>
 
     <div class="panel">
-      <h3>院長掲示板</h3>
+      <h3>院長掲示板　<span id="board-updated" style="font-size:10.5px; font-weight:400; color:var(--text-soft);"></span></h3>
       <div id="board-form-container"></div>
       <div id="board-list-container"></div>
     </div>
@@ -436,6 +459,16 @@ function setGithubStatus(msg, isError){
   if(!el) return;
   el.textContent = msg;
   el.style.color = isError ? '#B23A3A' : 'var(--text-soft)';
+}
+
+function setUpdatedTime(elId){
+  const el = document.getElementById(elId);
+  if(!el) return;
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+  el.textContent = '最終更新 ' + hh + ':' + mm + ':' + ss;
 }
 
 function utf8ToB64(str){
@@ -557,6 +590,7 @@ async function renderShiftTable(){
     data = result.json;
     shiftSha = result.sha;
     setGithubStatus('GitHubと同期済みです。', false);
+    setUpdatedTime('shift-updated');
   }catch(e){
     data = loadShiftLocal();
     setGithubStatus('GitHub読み込みに失敗しました。この端末の保存分を表示しています。（' + e.message + '）', true);
@@ -640,6 +674,7 @@ async function renderBoard(){
     const result = await githubGetFile(BOARD_PATH);
     posts = result.json;
     boardSha = result.sha;
+    setUpdatedTime('board-updated');
   }catch(e){
     posts = loadBoardLocal();
     setGithubStatus('GitHub読み込みに失敗しました。この端末の保存分を表示しています。（' + e.message + '）', true);
@@ -661,15 +696,39 @@ async function renderBoard(){
     listEl.innerHTML = '<p class="board-empty">まだ投稿はありません。</p>';
     return;
   }
+
+  const seen = loadSeenBoardSet();
   let html = '';
   posts.forEach((post, i) => {
+    const sig = boardPostSignature(post);
+    const isNew = !seen.has(sig);
     html += '<div class="board-post">' +
-      '<span class="bdate">' + post.date + (post.author ? '<br><b style="color:var(--navy);">' + escapeHtml(post.author) + '</b>' : '') + '</span>' +
+      '<span class="bdate">' + post.date + (post.author ? '<br><b style="color:var(--navy);">' + escapeHtml(post.author) + '</b>' : '') + (isNew ? '<span class="new-badge">NEW</span>' : '') + '</span>' +
       '<span class="btext">' + escapeHtml(post.text) + '</span>' +
       (isDirector ? '<button class="bdel" onclick="deleteBoardPost(' + i + ');">削除</button>' : '') +
       '</div>';
   });
   listEl.innerHTML = html;
+
+  // 表示した投稿は既読として記録しておく（次回以降NEWが消える）
+  const newSeen = new Set(posts.map(boardPostSignature));
+  saveSeenBoardSet(newSeen);
+}
+
+function boardPostSignature(post){
+  return (post.date || '') + '|' + (post.author || '') + '|' + (post.text || '');
+}
+
+const BOARD_SEEN_KEY = 'hospitalBoardSeen';
+function loadSeenBoardSet(){
+  try{
+    const raw = localStorage.getItem(BOARD_SEEN_KEY);
+    if(raw) return new Set(JSON.parse(raw));
+  }catch(e){}
+  return new Set();
+}
+function saveSeenBoardSet(set){
+  try{ localStorage.setItem(BOARD_SEEN_KEY, JSON.stringify(Array.from(set))); }catch(e){}
 }
 
 async function postBoard(){
