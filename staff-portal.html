@@ -473,9 +473,47 @@ async function githubPutFile(path, jsonData, sha, message){
   });
   if(!res.ok){
     const t = await res.text();
-    throw new Error('保存失敗（' + res.status + '）: ' + t);
+    const err = new Error('保存失敗（' + res.status + '）: ' + t);
+    err.status = res.status;
+    throw err;
   }
   return await res.json();
+}
+
+// 最新のファイルを取得 → mutateFn で書き換え → 保存。
+// 409（他の変更とぶつかった場合）は最新状態を取り直して自動リトライする。
+async function githubUpdateFile(path, mutateFn, message, maxRetries){
+  maxRetries = maxRetries || 4;
+  let lastError;
+  for(let i = 0; i < maxRetries; i++){
+    try{
+      const result = await githubGetFile(path);
+      const newData = mutateFn(result.json);
+      return await githubPutFile(path, newData, result.sha, message);
+    }catch(e){
+      lastError = e;
+      if(e.status === 409){
+        await new Promise(r => setTimeout(r, 250 + Math.random()*350));
+        continue;
+      }
+      throw e;
+    }
+  }
+  throw lastError;
+}
+
+// 連続操作しても書き込みが同時に走らないよう、1件ずつ順番に処理するキュー。
+// パスごと（shift.json / board.json）に別々のキューを持たせる。
+const writeQueues = {};
+function queuedGithubUpdate(path, mutateFn, message, maxRetries){
+  const prev = writeQueues[path] || Promise.resolve();
+  const run = prev.then(
+    () => githubUpdateFile(path, mutateFn, message, maxRetries),
+    () => githubUpdateFile(path, mutateFn, message, maxRetries) // 前の操作が失敗していても次は実行する
+  );
+  // キュー自体はエラーで止まらないようにしておく
+  writeQueues[path] = run.catch(() => {});
+  return run;
 }
 
 // ==================================================================
@@ -556,10 +594,10 @@ async function renderShiftTable(){
 async function updateShift(rowIndex, dayIndex, value){
   if(getGithubToken()){
     try{
-      const result = await githubGetFile(SHIFT_PATH);
-      const data = result.json;
-      data[rowIndex].days[dayIndex] = value;
-      const put = await githubPutFile(SHIFT_PATH, data, result.sha, 'シフト表を更新');
+      const put = await queuedGithubUpdate(SHIFT_PATH, (data) => {
+        data[rowIndex].days[dayIndex] = value;
+        return data;
+      }, 'シフト表を更新');
       shiftSha = put.content.sha;
       setGithubStatus('GitHubに保存しました。', false);
     }catch(e){
@@ -645,10 +683,10 @@ async function postBoard(){
 
   if(getGithubToken()){
     try{
-      const result = await githubGetFile(BOARD_PATH);
-      const posts = result.json;
-      posts.unshift(newPost);
-      const put = await githubPutFile(BOARD_PATH, posts, result.sha, '掲示板に投稿');
+      const put = await queuedGithubUpdate(BOARD_PATH, (posts) => {
+        posts.unshift(newPost);
+        return posts;
+      }, '掲示板に投稿');
       boardSha = put.content.sha;
       setGithubStatus('GitHubに投稿しました。', false);
     }catch(e){
@@ -666,10 +704,10 @@ async function postBoard(){
 async function deleteBoardPost(index){
   if(getGithubToken()){
     try{
-      const result = await githubGetFile(BOARD_PATH);
-      const posts = result.json;
-      posts.splice(index, 1);
-      const put = await githubPutFile(BOARD_PATH, posts, result.sha, '掲示板の投稿を削除');
+      const put = await queuedGithubUpdate(BOARD_PATH, (posts) => {
+        posts.splice(index, 1);
+        return posts;
+      }, '掲示板の投稿を削除');
       boardSha = put.content.sha;
       setGithubStatus('GitHubに反映しました。', false);
     }catch(e){
